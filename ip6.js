@@ -32,20 +32,18 @@
             for (var i = hs.length; i > 0; --i) {
                 sections[7 - (hs.length - i)] = hs[i - 1];
             }
-            for (var i = 0; i < 8; ++i) {
-                var section = sections[i];
-                if (section === undefined) {
-                    sections[i] = '0000';
-                }
-                if (sections[i].length < 4) {
-                    var pad = '0000';
-                    sections[i] = pad.substring(0, pad.length - section.length) + section;
-                }
+        }
+        for (var i = 0; i < 8; ++i) {
+            if (sections[i] === undefined) {
+                sections[i] = '0000';
+            }
+            if (sections[i].length < 4) {
+                sections[i] = '0000'.substring(0, 4 - sections[i].length) + sections[i];
             }
         }
         return sections.join(':');
     };
-    var compact = function (a) {
+    var abbreviate = function (a) {
         if (!_validate(a)) {
             return false;
         }
@@ -58,10 +56,11 @@
 
     if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         exports.normalize = normalize;
-        exports.compact = compact;
+        exports.abbreviate = abbreviate;
         exports._validate = _validate;
     } else {
         window.normalize = normalize;
+        window.abbreviate = abbreviate;
         window._validate = _validate;
     }
 })();

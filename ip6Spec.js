@@ -20,10 +20,11 @@
             expect(ip6.normalize('2404:6800:4003:0808:0000:0000:0000:200e')).toBe('2404:6800:4003:0808:0000:0000:0000:200e');
             expect(ip6.normalize('2404:6800:4003:808::')).toBe('2404:6800:4003:0808:0000:0000:0000:0000');
             expect(ip6.normalize('2404:68::')).toBe('2404:0068:0000:0000:0000:0000:0000:0000');
+            expect(ip6.normalize('2404:6800:4003:0808:0:0:0:200e')).toBe('2404:6800:4003:0808:0000:0000:0000:200e');
         });
     });
 
-    describe('To compact IPv6 addresses.', function () {
+    describe('To abbreviate IPv6 addresses.', function () {
         beforeEach(function () {
         });
         afterEach(function () {
