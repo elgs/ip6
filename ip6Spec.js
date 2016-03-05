@@ -24,15 +24,15 @@
 
     describe('To abbreviate IPv6 addresses.', function () {
         it('should abbreviate IPv6 addresses', function () {
-            //expect(ip6.abbreviate('2001:0000:0111:0000:0011:0000:0001:0000')).toBe('2001:0:111:0:11:0:1:0');
+            expect(ip6.abbreviate('2001:0000:0111:0000:0011:0000:0001:0000')).toBe('2001:0:111:0:11:0:1:0');
             expect(ip6.abbreviate('2001:0001:0000:0001:0000:0000:0000:0001')).toBe('2001:1:0:1::1');
             expect(ip6.abbreviate('2001:0001:0000:0001:0000:0000:0000:0000')).toBe('2001:1:0:1::');
             expect(ip6.abbreviate('0000:0000:0000:0000:0000:0000:0000:0000')).toBe('::');
             expect(ip6.abbreviate('0000:0000:0000:0000:0000:0000:0000:0001')).toBe('::1');
             expect(ip6.abbreviate('2041:0000:140F:0000:0000:0000:875B:131B')).toBe('2041:0:140F::875B:131B');
             expect(ip6.abbreviate('2001:0001:0002:0003:0004:0005:0006:0007')).toBe('2001:1:2:3:4:5:6:7');
-            //expect(ip6.abbreviate('')).toBe('');
-            //expect(ip6.abbreviate('')).toBe('');
+            expect(ip6.abbreviate('2001:0000:0000:0000:1111:0000:0000:0000')).toBe('2001::1111:0:0:0');
+            expect(ip6.abbreviate('2001:db8:0:0:0:0:2:1')).toBe('2001:db8::2:1');
         });
     });
 
