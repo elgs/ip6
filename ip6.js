@@ -47,6 +47,13 @@
         if (!_validate(a)) {
             return false;
         }
+        a = normalize(a);
+        a = a.replace(/0000/g, 'g');
+        a = a.replace(/\:000/g, ':');
+        a = a.replace(/\:00/g, ':');
+        a = a.replace(/\:0/g, ':');
+        a = a.replace(/g/g, '0');
+        return a;
     };
 
     // Basic validation
