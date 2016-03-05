@@ -4,6 +4,7 @@ IPv6 address helper utilities.
 # Installation
 `npm install ip6`
 
+# Samples
 ```javascript
 var ip6 = require('ip6')
 
