@@ -1,0 +1,22 @@
+{
+  "name": "ip6",
+  "version": "0.0.1",
+  "description": "IPv6 address helper utilities.",
+  "main": "ip6.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elgs/ip6.git"
+  },
+  "keywords": [
+    "ipv6"
+  ],
+  "author": "Elgs Qian Chen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/elgs/ip6/issues"
+  },
+  "homepage": "https://github.com/elgs/ip6#readme"
+}
