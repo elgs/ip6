@@ -4,48 +4,47 @@
 ;(function () {
     'use strict';
 
-    var normalize = function (a) {
+    let normalize = function (a) {
         if (!_validate(a)) {
-            return false;
+            throw new Error('Invalid address: ' + a);
         }
-        var nh = a.split(/\:\:/g);
+        let nh = a.split(/\:\:/g);
         if (nh.length > 2) {
-            return false;
+            throw new Error('Invalid address: ' + a);
         }
 
-        var sections = [];
+        let sections = [];
         if (nh.length == 1) {
             // full mode
             sections = a.split(/\:/g);
             if (sections.length !== 8) {
-                return false;
+                throw new Error('Invalid address: ' + a);
             }
         } else if (nh.length == 2) {
             // compact mode
-            var n = nh[0];
-            var h = nh[1];
-            var ns = n.split(/\:/g);
-            var hs = h.split(/\:/g);
-            for (var i in ns) {
+            let n = nh[0];
+            let h = nh[1];
+            let ns = n.split(/\:/g);
+            let hs = h.split(/\:/g);
+            for (let i in ns) {
                 sections[i] = ns[i];
             }
-            for (var i = hs.length; i > 0; --i) {
+            for (let i = hs.length; i > 0; --i) {
                 sections[7 - (hs.length - i)] = hs[i - 1];
             }
         }
-        for (var i = 0; i < 8; ++i) {
+        for (let i = 0; i < 8; ++i) {
             if (sections[i] === undefined) {
                 sections[i] = '0000';
             }
-            if (sections[i].length < 4) {
-                sections[i] = '0000'.substring(0, 4 - sections[i].length) + sections[i];
-            }
+            sections[i] = _leftPad(sections[i], '0', 4);
         }
         return sections.join(':');
     };
-    var abbreviate = function (a) {
+
+    let abbreviate = function (a) {
         if (!_validate(a)) {
-            return false;
+            throw new Error('Invalid address: ' + a);
         }
         a = normalize(a);
         a = a.replace(/0000/g, 'g');
@@ -53,15 +52,15 @@
         a = a.replace(/\:00/g, ':');
         a = a.replace(/\:0/g, ':');
         a = a.replace(/g/g, '0');
-        var sections = a.split(/\:/g);
-        var zPreviousFlag = false;
-        var zeroStartIndex = -1;
-        var zeroLength = 0;
-        var zStartIndex = -1;
-        var zLength = 0;
-        for (var i = 0; i < 8; ++i) {
-            var section = sections[i];
-            var zFlag = (section === '0');
+        let sections = a.split(/\:/g);
+        let zPreviousFlag = false;
+        let zeroStartIndex = -1;
+        let zeroLength = 0;
+        let zStartIndex = -1;
+        let zLength = 0;
+        for (let i = 0; i < 8; ++i) {
+            let section = sections[i];
+            let zFlag = (section === '0');
             if (zFlag && !zPreviousFlag) {
                 zStartIndex = i;
             }
@@ -98,17 +97,83 @@
     };
 
     // Basic validation
-    var _validate = function (a) {
+    let _validate = function (a) {
         return /^[a-f0-9\\:]+$/ig.test(a);
+    };
+
+    let _leftPad = function (d, p, n) {
+        let padding = p.repeat(n);
+        if (d.length < padding.length) {
+            d = padding.substring(0, padding.length - d.length) + d;
+        }
+        return d;
+    };
+
+    let _hex2bin = function (hex) {
+        return parseInt(hex, 16).toString(2)
+    };
+    let _bin2hex = function (bin) {
+        return parseInt(bin, 2).toString(16)
+    };
+
+    let _addr2bin = function (addr) {
+        let nAddr = normalize(addr);
+        let sections = nAddr.split(":");
+        let binAddr = '';
+        for (let i in sections) {
+            let part = sections[i];
+            let section = _leftPad(_hex2bin(part), '0', 16);
+            binAddr += section;
+        }
+        return binAddr;
+    };
+
+    let _bin2addr = function (bin) {
+        let addr = [];
+        for (let i = 0; i < 8; ++i) {
+            let binPart = bin.substr(i * 16, 16);
+            let hexSection = _leftPad(_bin2hex(binPart), '0', 4);
+            addr.push(hexSection);
+        }
+        return addr.join(':');
+    };
+
+    let divideSubnet = function (addr, mask0, mask1) {
+        if (!_validate(addr)) {
+            throw new Error('Invalid address: ' + addr);
+        }
+        if (mask0 < 1 || mask1 < 1 || mask0 > 128 || mask1 > 128 || mask0 > mask1) {
+            throw new Error('Invalid masks.');
+        }
+        let ret = [];
+        let binAddr = _addr2bin(addr);
+        let binNetPart = binAddr.substr(0, mask0);
+        let binSubnetPart = binAddr.substr(mask0, mask1 - mask0);
+        let binHostPart = binAddr.substr(mask1);
+        if (binSubnetPart.includes('1') || binHostPart.includes('1')) {
+            throw new Error('Invalid masks.');
+        }
+        let numSubnets = Math.pow(2, binSubnetPart.length);
+        for (let i = 0; i < numSubnets; ++i) {
+            let binSubnet = _leftPad(i.toString(2), '0', binSubnetPart.length);
+            let binSubAddr = binNetPart + binSubnet + binHostPart;
+            let hexAddr = _bin2addr(binSubAddr);
+            ret.push(hexAddr);
+        }
+        // console.log(numSubnets);
+        // console.log(binNetPart, binSubnetPart, binHostPart);
+        // console.log(binNetPart.length, binSubnetPart.length, binHostPart.length);
+        // console.log(ret.length);
+        return ret;
     };
 
     if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         exports.normalize = normalize;
         exports.abbreviate = abbreviate;
-        exports._validate = _validate;
+        exports.divideSubnet = divideSubnet;
     } else {
         window.normalize = normalize;
         window.abbreviate = abbreviate;
-        window._validate = _validate;
+        window.divideSubnet = divideSubnet;
     }
 })();

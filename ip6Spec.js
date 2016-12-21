@@ -4,10 +4,9 @@
 ;(function () {
     'use strict';
 
-    var ip6 = require('./ip6.js');
+    let ip6 = require('./ip6.js');
 
     ////////////////////////////////////////////////////////////////////////////
-    // Public tests
 
     describe('To normalize IPv6 addresses', function () {
         it('should normalize IPv6 addresses', function () {
@@ -36,18 +35,14 @@
         });
     });
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Private test
-
-    describe('To validate IPv6 addresses.', function () {
-        beforeEach(function () {
-        });
-        afterEach(function () {
-        });
-
-        it('should check whether IPv6 addresses are valid', function () {
-            expect(ip6._validate('cafe:babe')).toBeTruthy();
-            expect(ip6._validate('hello world')).toBeFalsy();
+    describe('To divide IPv6 subnet.', function () {
+        it('should divide a /64 into 4 /66 subnets.', function () {
+            let n66 = ip6.divideSubnet("2607:5300:60:72b7::", 64, 66);
+            expect(n66.length).toBe(4);
+            expect(n66[0]).toBe('2607:5300:0060:72b7:0000:0000:0000:0000');
+            expect(n66[1]).toBe('2607:5300:0060:72b7:4000:0000:0000:0000');
+            expect(n66[2]).toBe('2607:5300:0060:72b7:8000:0000:0000:0000');
+            expect(n66[3]).toBe('2607:5300:0060:72b7:c000:0000:0000:0000');
         });
     });
 })();
