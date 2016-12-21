@@ -1,11 +1,11 @@
 # ip6
 IPv6 address helper utilities.
 
-# Installation
+## Installation
 `npm install ip6`
 
-# Samples
-## To `normalize` IPv6 addresses
+## Sample code
+### To `normalize` IPv6 addresses
 ```javascript
 let ip6 = require('ip6')
 
@@ -25,7 +25,7 @@ console.log(ip6.normalize('::1'));
 // 0000:0000:0000:0000:0000:0000:0000:0001
 ```
 
-## To `abbreviate` IPv6 addresses
+### To `abbreviate` IPv6 addresses
 
 ```javascript
 console.log(ip6.abbreviate('2001:0000:0111:0000:0011:0000:0001:0000'));
@@ -44,7 +44,7 @@ console.log(ip6.abbreviate('2001:0001:0002:0003:0004:0005:0006:0007'));
 // 2001:1:2:3:4:5:6:7
 ```
 
-## To divide a `/64` subnet into 4 `/66` subnets
+### To divide a `/64` subnet into 4 `/66` subnets
 ```javascript
 let subnets = ip6.divideSubnet("2607:5300:60:1234::", 64, 66);
 console.log(subnets);
@@ -58,7 +58,7 @@ outputs:
 */
 ```
 
-## To divide a `/64` subnet into `/128` subnets, but limit to 8 addresses
+### To divide a `/64` subnet into `/128` subnets, but limit to 8 addresses
 ```javascript
 let subnets = ip6.divideSubnet("2607:5300:60:1234::", 64, 128, 8);
 console.log(subnets);
@@ -72,12 +72,10 @@ console.log(subnets);
   '2607:5300:0060:1234:0000:0000:0000:0005',
   '2607:5300:0060:1234:0000:0000:0000:0006',
   '2607:5300:0060:1234:0000:0000:0000:0007' ]
-
-
 */
 ```
 
-## To divide a `/64` subnet into `/128` subnets, but limit to 8 abbreviated addresses
+### To divide a `/64` subnet into `/128` subnets, but limit to 8 abbreviated addresses
 ```javascript
 let subnets = ip6.divideSubnet("2607:5300:60:1234::", 64, 128, 8, true);
 console.log(subnets);
@@ -91,7 +89,5 @@ console.log(subnets);
   '2607:5300:60:1234::5',
   '2607:5300:60:1234::6',
   '2607:5300:60:1234::7' ]
-
-
 */
 ```
