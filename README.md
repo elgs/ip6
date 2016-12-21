@@ -2,7 +2,10 @@
 IPv6 address helper utilities.
 
 ## Installation
+### Module
 `npm install ip6`
+### Standalone
+`npm install ip6 -g`
 
 ## Sample code
 ### To `normalize` IPv6 addresses
