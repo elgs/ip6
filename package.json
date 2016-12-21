@@ -1,10 +1,10 @@
 {
   "name": "ip6",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "IPv6 address helper utilities.",
   "main": "ip6.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "bin": {
+    "ip6": "./ip6"
   },
   "repository": {
     "type": "git",

@@ -1,0 +1,53 @@
+#!/usr/bin/env node
+
+(function () {
+    'use strict';
+
+    let ip6 = require('./ip6.js');
+    let pjson = require('./package.json');
+
+    let args = function () {
+        let ret = [];
+        process.argv.forEach(function (val, index, array) {
+            if (index >= 2) {
+                ret.push(val);
+            }
+        });
+        return ret;
+    };
+    let input = args();
+
+    if (input.length === 0) {
+        console.log('ip6 version: ', pjson.version);
+        console.log('Usage:');
+        console.log('   ip6 -v, --version           to show version information.');
+        console.log('   ip6 -n, --normalize addr    to normalize an IPv6 address.');
+        console.log('   ip6 -a, --abbreviate addr   to abbreviate an IPv6 address.');
+        console.log('   ip6 -d, --divide subnet mask new_mask [limit abbreviated] \n        to divide an IPv6 subnet into smaller subnets.');
+    } else if (input[0] === '-v' || input[0] === '--version') {
+        console.log('ip6 version: ', pjson.version);
+    } else if (input[0] === '-n' || input[0] === '--normalize') {
+        try {
+            const output = ip6.normalize(input[1]);
+            console.log(output);
+        } catch (e) {
+            console.error(e.message);
+        }
+    } else if (input[0] === '-a' || input[0] === '--abbreviate') {
+        try {
+            const output = ip6.abbreviate(input[1]);
+            console.log(output);
+        } catch (e) {
+            console.error(e.message);
+        }
+    } else if (input[0] === '-d' || input[0] === '--divide') {
+        try {
+            const output = ip6.divideSubnet(input[1], input[2], input[3], input[4], input[5]);
+            for (let i in output) {
+                console.log(output[i]);
+            }
+        } catch (e) {
+            console.error(e.message);
+        }
+    }
+})();
