@@ -44,5 +44,21 @@
             expect(n66[2]).toBe('2607:5300:0060:1234:8000:0000:0000:0000');
             expect(n66[3]).toBe('2607:5300:0060:1234:c000:0000:0000:0000');
         });
+
+        it('should divide a /64 into 4 /66 subnets, but limit to 2 subnets.', function () {
+            let n66 = ip6.divideSubnet("2607:5300:60:1234::", 64, 128, 2);
+            expect(n66.length).toBe(2);
+            expect(n66[0]).toBe('2607:5300:0060:1234:0000:0000:0000:0000');
+            expect(n66[1]).toBe('2607:5300:0060:1234:0000:0000:0000:0001');
+        });
+
+        it('should divide a /64 into 4 abbreviated /66 subnets.', function () {
+            let n66 = ip6.divideSubnet("2607:5300:60:1234::", 64, 66, null, true);
+            expect(n66.length).toBe(4);
+            expect(n66[0]).toBe('2607:5300:60:1234::');
+            expect(n66[1]).toBe('2607:5300:60:1234:4000::');
+            expect(n66[2]).toBe('2607:5300:60:1234:8000::');
+            expect(n66[3]).toBe('2607:5300:60:1234:c000::');
+        });
     });
 })();

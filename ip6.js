@@ -138,7 +138,7 @@
         return addr.join(':');
     };
 
-    let divideSubnet = function (addr, mask0, mask1) {
+    let divideSubnet = function (addr, mask0, mask1, limit, abbr) {
         if (!_validate(addr)) {
             throw new Error('Invalid address: ' + addr);
         }
@@ -155,10 +155,18 @@
         }
         let numSubnets = Math.pow(2, binSubnetPart.length);
         for (let i = 0; i < numSubnets; ++i) {
+            if (!!limit && i >= limit) {
+                break;
+            }
             let binSubnet = _leftPad(i.toString(2), '0', binSubnetPart.length);
             let binSubAddr = binNetPart + binSubnet + binHostPart;
             let hexAddr = _bin2addr(binSubAddr);
-            ret.push(hexAddr);
+            if (!!abbr) {
+                ret.push(abbreviate(hexAddr));
+            } else {
+                ret.push(hexAddr);
+            }
+
         }
         // console.log(numSubnets);
         // console.log(binNetPart, binSubnetPart, binHostPart);
