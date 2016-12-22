@@ -95,7 +95,7 @@ console.log(subnets);
 */
 ```
 
-### To calculate the range of a `/64` subnet:
+### To calculate the range and size of a `/64` subnet:
 ```javascript
 let range = ip6.range("2607:5300:60:1234::", 64, 128);
 console.log(range);
