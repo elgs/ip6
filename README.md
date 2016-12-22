@@ -106,7 +106,7 @@ console.log(range);
  */
 ```
 
-### To calculate the range of a `/64` subnet (output in abbreviated mode):
+### To calculate the range and size of a `/64` subnet divided into /120 subnets (output in abbreviated mode):
 ```javascript
 let range = ip6.range("2607:5300:60:1234::", 64, 120, true);
 console.log(range);
@@ -157,6 +157,12 @@ ip6 -d -s 2001:db8:: 64 80 5
 2001:db8:0:0:3::
 2001:db8:0:0:4::
 2001:db8:0:0:5::
+```
+
+### To calculate the range and size of a `/64` subnet divided into /120 subnets (output in abbreviated mode):
+```bash
+ip6 -r -s 2607:5300:60:1234:: 64 120
+{"start":"2607:5300:60:1234::","end":"2607:5300:60:1234:ffff:ffff:ffff:ff00","size":256}
 ```
 
 ## License
