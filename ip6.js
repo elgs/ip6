@@ -142,6 +142,8 @@
         if (!_validate(addr)) {
             throw new Error('Invalid address: ' + addr);
         }
+        mask0 *= 1;
+        mask1 *= 1;
         if (mask0 < 1 || mask1 < 1 || mask0 > 128 || mask1 > 128 || mask0 > mask1) {
             throw new Error('Invalid masks.');
         }
@@ -155,7 +157,7 @@
         }
         let numSubnets = Math.pow(2, binSubnetPart.length);
         for (let i = 0; i < numSubnets; ++i) {
-            if (!!limit && i >= limit) {
+            if (!!limit && i >= limit * 1) {
                 break;
             }
             let binSubnet = _leftPad(i.toString(2), '0', binSubnetPart.length);
