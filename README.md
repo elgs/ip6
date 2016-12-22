@@ -51,7 +51,6 @@ console.log(ip6.abbreviate('2001:0001:0002:0003:0004:0005:0006:0007'));
 ```javascript
 let subnets = ip6.divideSubnet("2607:5300:60:1234::", 64, 66);
 console.log(subnets);
-
 /*
 outputs:
 [ '2607:5300:0060:1234:0000:0000:0000:0000',
@@ -65,7 +64,6 @@ outputs:
 ```javascript
 let subnets = ip6.divideSubnet("2607:5300:60:1234::", 64, 128, 8);
 console.log(subnets);
-
 /*
 [ '2607:5300:0060:1234:0000:0000:0000:0000',
   '2607:5300:0060:1234:0000:0000:0000:0001',
@@ -82,7 +80,6 @@ console.log(subnets);
 ```javascript
 let subnets = ip6.divideSubnet("2607:5300:60:1234::", 64, 128, 8, true);
 console.log(subnets);
-
 /*
 [ '2607:5300:60:1234::',
   '2607:5300:60:1234::1',
