@@ -7,7 +7,7 @@ IPv6 address helper utilities.
 ### Standalone
 `npm install ip6 -g`
 
-## Sample code
+## Module Usage
 ### To `normalize` IPv6 addresses
 ```javascript
 let ip6 = require('ip6')
@@ -94,3 +94,68 @@ console.log(subnets);
   '2607:5300:60:1234::7' ]
 */
 ```
+
+## Standalone Usage
+### To normalize an IPv6 address:
+```bash
+ip6 -n 2001:db8::
+2001:0db8:0000:0000:0000:0000:0000:0000
+```
+
+### To abbreviate an IPv6 address:
+```bash
+ip6 -a 2001:0db8:0000:0000:0000:0000:0000:0000
+2001:db8::
+```
+
+### To divide a /64 subnet into 4 /66 subnets:
+```bash
+ip6 -d 2001:db8:: 64 66
+2001:0db8:0000:0000:0000:0000:0000:0000
+2001:0db8:0000:0000:4000:0000:0000:0000
+2001:0db8:0000:0000:8000:0000:0000:0000
+2001:0db8:0000:0000:c000:0000:0000:0000
+```
+
+### To divide a /64 subnet into /80 subnets, but outputs only 5 subnets:
+```bash
+ip6 -d 2001:db8:: 64 80 5
+2001:0db8:0000:0000:0001:0000:0000:0000
+2001:0db8:0000:0000:0002:0000:0000:0000
+2001:0db8:0000:0000:0003:0000:0000:0000
+2001:0db8:0000:0000:0004:0000:0000:0000
+2001:0db8:0000:0000:0005:0000:0000:0000
+```
+
+### To divide a /64 subnet into /80 subnets, but outputs only 5 subnets in abbreviated mode:
+```bash
+ip6 -d -s 2001:db8:: 64 80 5
+2001:db8:0:0:1::
+2001:db8:0:0:2::
+2001:db8:0:0:3::
+2001:db8:0:0:4::
+2001:db8:0:0:5::
+```
+
+## License
+The MIT License (MIT)
+
+Copyright (c) 2016 Elgs Qian Chen
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
