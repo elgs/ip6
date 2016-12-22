@@ -71,10 +71,13 @@
         });
 
         it('should calculate the first and the last address of an IPv6 subnet.', function () {
-            let n120 = ip6.range("2607:5300:60::", 48, 56);
-            expect(n120.start).toBe('2607:5300:0060:0000:0000:0000:0000:0000');
-            expect(n120.end).toBe('2607:5300:0060:ff00:0000:0000:0000:0000');
-            expect(n120.size).toBe(256);
+            let n56 = ip6.range("2607:5300:60::", 48, 56);
+            expect(n56.start).toBe('2607:5300:0060:0000:0000:0000:0000:0000');
+            expect(n56.end).toBe('2607:5300:0060:ff00:0000:0000:0000:0000');
+            expect(n56.size).toBe(256);
+
+            let r128 = ip6.randomSubnet("2607:5300:60::", 48, 128, 5, true);
+            console.log(r128);
         });
     });
 })();

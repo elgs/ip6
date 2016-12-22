@@ -144,23 +144,21 @@
         }
         mask0 *= 1;
         mask1 *= 1;
+        limit *= 1;
+        mask1 = mask1 || 128;
         if (mask0 < 1 || mask1 < 1 || mask0 > 128 || mask1 > 128 || mask0 > mask1) {
             throw new Error('Invalid masks.');
         }
         let ret = [];
         let binAddr = _addr2bin(addr);
         let binNetPart = binAddr.substr(0, mask0);
-        let binSubnetPart = binAddr.substr(mask0, mask1 - mask0);
-        let binHostPart = binAddr.substr(mask1);
-        if (binSubnetPart.includes('1') || binHostPart.includes('1')) {
-            throw new Error('Invalid masks.');
-        }
-        let numSubnets = Math.pow(2, binSubnetPart.length);
+        let binHostPart = '0'.repeat(128 - mask1);
+        let numSubnets = Math.pow(2, mask1 - mask0);
         for (let i = 0; i < numSubnets; ++i) {
-            if (!!limit && i >= limit * 1) {
+            if (!!limit && i >= limit) {
                 break;
             }
-            let binSubnet = _leftPad(i.toString(2), '0', binSubnetPart.length);
+            let binSubnet = _leftPad(i.toString(2), '0', mask1 - mask0);
             let binSubAddr = binNetPart + binSubnet + binHostPart;
             let hexAddr = _bin2addr(binSubAddr);
             if (!!abbr) {
@@ -183,6 +181,7 @@
         }
         mask0 *= 1;
         mask1 *= 1;
+        mask1 = mask1 || 128;
         if (mask0 < 1 || mask1 < 1 || mask0 > 128 || mask1 > 128 || mask0 > mask1) {
             throw new Error('Invalid masks.');
         }
@@ -206,15 +205,55 @@
         }
     };
 
+    let randomSubnet = function (addr, mask0, mask1, limit, abbr) {
+        if (!_validate(addr)) {
+            throw new Error('Invalid address: ' + addr);
+        }
+        mask0 *= 1;
+        mask1 *= 1;
+        limit *= 1;
+        mask1 = mask1 || 128;
+        limit = limit || 1;
+        if (mask0 < 1 || mask1 < 1 || mask0 > 128 || mask1 > 128 || mask0 > mask1) {
+            throw new Error('Invalid masks.');
+        }
+        let ret = [];
+        let binAddr = _addr2bin(addr);
+        let binNetPart = binAddr.substr(0, mask0);
+        let binHostPart = '0'.repeat(128 - mask1);
+        let numSubnets = Math.pow(2, mask1 - mask0);
+        for (let i = 0; i < numSubnets && i < limit; ++i) {
+            // generate an binary string with length of mask1 - mask0
+            let binSubnet = '';
+            for (let j = 0; j < mask1 - mask0; ++j) {
+                binSubnet += Math.floor(Math.random() * 2);
+            }
+            let binSubAddr = binNetPart + binSubnet + binHostPart;
+            let hexAddr = _bin2addr(binSubAddr);
+            if (!!abbr) {
+                ret.push(abbreviate(hexAddr));
+            } else {
+                ret.push(hexAddr);
+            }
+        }
+        // console.log(numSubnets);
+        // console.log(binNetPart, binSubnetPart, binHostPart);
+        // console.log(binNetPart.length, binSubnetPart.length, binHostPart.length);
+        // console.log(ret.length);
+        return ret;
+    };
+
     if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         exports.normalize = normalize;
         exports.abbreviate = abbreviate;
         exports.divideSubnet = divideSubnet;
         exports.range = range;
+        exports.randomSubnet = randomSubnet;
     } else {
         window.normalize = normalize;
         window.abbreviate = abbreviate;
         window.divideSubnet = divideSubnet;
         window.range = range;
+        window.randomSubnet = randomSubnet;
     }
 })();

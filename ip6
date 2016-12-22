@@ -24,7 +24,8 @@
         console.log('   ip6 -n, --normalize addr    to normalize an IPv6 address.');
         console.log('   ip6 -a, --abbreviate addr   to abbreviate an IPv6 address.');
         console.log('   ip6 -d, --divide [-s, --short] subnet mask new_mask [limit] \n        to divide an IPv6 subnet into smaller subnets.');
-        console.log('   ip6 -r, --range [-s, --short] subnet mask new_mask \n        to calculate the range of an IPv6 subnet.');
+        console.log('   ip6 -r, --random [-s, --short] subnet mask new_mask [limit] \n        to generate random addresses/subnets from an IPv6 subnet.');
+        console.log('   ip6 -R, --range [-s, --short] subnet mask new_mask \n        to calculate the range and size of an IPv6 subnet.');
         console.log();
         console.log('Examples:');
         console.log('   To normalize an IPv6 address:');
@@ -58,8 +59,16 @@
         console.log('   2001:db8:0:0:4::');
         console.log('   2001:db8:0:0:5::');
         console.log();
+        console.log('   To generate 5 random /56 subnets from a /48 subnets:');
+        console.log('   ip6 -r -s 2607:5300:60:: 48 56 5');
+        console.log('   2607:5300:60:f00::');
+        console.log('   2607:5300:60:3900::');
+        console.log('   2607:5300:60:5c00::');
+        console.log('   2607:5300:60:a800::');
+        console.log('   2607:5300:60:e00::');
+        console.log();
         console.log('   To calculate the range and size of a /64 subnet divided into /120 subnets:');
-        console.log('   ip6 -r -s 2001:db8:: 64 80');
+        console.log('   ip6 -R -s 2001:db8:: 64 80');
         console.log('   {"start":"2001:db8::","end":"2001:db8::ffff:ffff:ffff:ff00","size"::65536}');
     } else if (input[0] === '-v' || input[0] === '--version') {
         console.log('ip6 version: ', pjson.version);
@@ -97,7 +106,27 @@
         } catch (e) {
             console.error(e.message);
         }
-    } else if (input.includes('-r') || input.includes('--range')) {
+    } else if (input.includes('-r') || input.includes('--random')) {
+        let abbr = false;
+        if (input.includes('-s') || input.includes('--short')) {
+            abbr = true;
+        }
+        try {
+            if (abbr) {
+                const output = ip6.randomSubnet(input[2], input[3], input[4], input[5], true);
+                for (let i in output) {
+                    console.log(output[i]);
+                }
+            } else {
+                const output = ip6.randomSubnet(input[1], input[2], input[3], input[4]);
+                for (let i in output) {
+                    console.log(output[i]);
+                }
+            }
+        } catch (e) {
+            console.error(e.message);
+        }
+    } else if (input.includes('-R') || input.includes('--range')) {
         let abbr = false;
         if (input.includes('-s') || input.includes('--short')) {
             abbr = true;

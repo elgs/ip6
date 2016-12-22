@@ -4,6 +4,7 @@ IPv6 address helper utilities.
 ## Installation
 ### Module
 `npm install ip6`
+
 ### Standalone
 `npm install ip6 -g`
 
@@ -92,6 +93,19 @@ console.log(subnets);
 */
 ```
 
+### To generate 5 random `/128` from a `/48` (output in abbreviated mode):
+```javascript
+let r = ip6.randomSubnet("2607:5300:60::", 48, 128, 5, true);
+console.log(r);
+/*
+[ '2607:5300:60:ba28:1acc:11ef:23a:770',
+  '2607:5300:60:c1e:1f2:4b93:f2e6:bc31',
+  '2607:5300:60:58b3:df4c:d91b:508f:b022',
+  '2607:5300:60:fec3:4790:f791:ae5b:8675',
+  '2607:5300:60:41b9:20a8:dd08:1c9e:7bc3' ]
+*/
+```
+
 ### To calculate the range and size of a `/64` subnet:
 ```javascript
 let range = ip6.range("2607:5300:60:1234::", 64, 128);
@@ -156,9 +170,19 @@ ip6 -d -s 2001:db8:: 64 80 5
 2001:db8:0:0:5::
 ```
 
+### To generate 5 random `/56` subnets from a `/48` subnets:
+```bash
+ip6 -r -s 2607:5300:60:: 48 56 5
+2607:5300:60:6300::
+2607:5300:60:f300::
+2607:5300:60:7000::
+2607:5300:60:ce00::
+2607:5300:60:9100::
+```
+
 ### To calculate the range and size of a `/48` subnet divided into /56 subnets (output in abbreviated mode):
 ```bash
-ip6 -r -s 2607:5300:60:: 48 56
+ip6 -R -s 2607:5300:60:: 48 56
 {"start":"2607:5300:60::","end":"2607:5300:60:ff00::","size":256}
 ```
 
