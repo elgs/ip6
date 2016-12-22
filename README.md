@@ -95,6 +95,28 @@ console.log(subnets);
 */
 ```
 
+### To calculate the range of a `/64` subnet:
+```javascript
+let range = ip6.range("2607:5300:60:1234::", 64, 128);
+console.log(range);
+/*
+{ start: '2607:5300:0060:1234:0000:0000:0000:0000',
+  end: '2607:5300:0060:1234:ffff:ffff:ffff:ffff',
+  size: 1 }
+ */
+```
+
+### To calculate the range of a `/64` subnet (output in abbreviated mode):
+```javascript
+let range = ip6.range("2607:5300:60:1234::", 64, 120, true);
+console.log(range);
+/*
+{ start: '2607:5300:60:1234::',
+  end: '2607:5300:60:1234:ffff:ffff:ffff:ff00',
+  size: 256 }
+ */
+```
+
 ## Standalone Usage
 ### To normalize an IPv6 address:
 ```bash

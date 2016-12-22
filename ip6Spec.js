@@ -46,10 +46,10 @@
         });
 
         it('should divide a /64 into 4 /66 subnets, but limit to 2 subnets.', function () {
-            let n66 = ip6.divideSubnet("2607:5300:60:1234::", 64, 128, 2);
-            expect(n66.length).toBe(2);
-            expect(n66[0]).toBe('2607:5300:0060:1234:0000:0000:0000:0000');
-            expect(n66[1]).toBe('2607:5300:0060:1234:0000:0000:0000:0001');
+            let n128 = ip6.divideSubnet("2607:5300:60:1234::", 64, 128, 2);
+            expect(n128.length).toBe(2);
+            expect(n128[0]).toBe('2607:5300:0060:1234:0000:0000:0000:0000');
+            expect(n128[1]).toBe('2607:5300:0060:1234:0000:0000:0000:0001');
         });
 
         it('should divide a /64 into 4 abbreviated /66 subnets.', function () {
@@ -59,6 +59,22 @@
             expect(n66[1]).toBe('2607:5300:60:1234:4000::');
             expect(n66[2]).toBe('2607:5300:60:1234:8000::');
             expect(n66[3]).toBe('2607:5300:60:1234:c000::');
+        });
+    });
+
+    describe('To calculate the range of an IPv6 subnet.', function () {
+        it('should calculate the first and the last address of an IPv6 subnet.', function () {
+            let n65 = ip6.range("2607:5300:60:1234::", 64, 65, true);
+            expect(n65.start).toBe('2607:5300:60:1234::');
+            expect(n65.end).toBe('2607:5300:60:1234:8000::');
+            expect(n65.size).toBe(9223372036854776000);
+        });
+
+        it('should calculate the first and the last address of an IPv6 subnet.', function () {
+            let n120 = ip6.range("2607:5300:60:1234::", 64, 120);
+            expect(n120.start).toBe('2607:5300:0060:1234:0000:0000:0000:0000');
+            expect(n120.end).toBe('2607:5300:0060:1234:ffff:ffff:ffff:ff00');
+            expect(n120.size).toBe(256);
         });
     });
 })();

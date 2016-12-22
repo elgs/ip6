@@ -177,13 +177,44 @@
         return ret;
     };
 
+    let range = function (addr, mask0, mask1, abbr) {
+        if (!_validate(addr)) {
+            throw new Error('Invalid address: ' + addr);
+        }
+        mask0 *= 1;
+        mask1 *= 1;
+        if (mask0 < 1 || mask1 < 1 || mask0 > 128 || mask1 > 128 || mask0 > mask1) {
+            throw new Error('Invalid masks.');
+        }
+        let binAddr = _addr2bin(addr);
+        let binNetPart = binAddr.substr(0, mask0);
+        let binHostPart = '0'.repeat(128 - mask1);
+        let binStartAddr = binNetPart + '0'.repeat(mask1 - mask0) + binHostPart;
+        let binEndAddr = binNetPart + '1'.repeat(mask1 - mask0) + binHostPart;
+        if (!!abbr) {
+            return {
+                start: abbreviate(_bin2addr(binStartAddr)),
+                end: abbreviate(_bin2addr(binEndAddr)),
+                size: Math.pow(2, 128 - mask1)
+            };
+        } else {
+            return {
+                start: _bin2addr(binStartAddr),
+                end: _bin2addr(binEndAddr),
+                size: Math.pow(2, 128 - mask1)
+            };
+        }
+    };
+
     if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         exports.normalize = normalize;
         exports.abbreviate = abbreviate;
         exports.divideSubnet = divideSubnet;
+        exports.range = range;
     } else {
         window.normalize = normalize;
         window.abbreviate = abbreviate;
         window.divideSubnet = divideSubnet;
+        window.range = range;
     }
 })();
