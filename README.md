@@ -108,7 +108,7 @@ ip6 -a 2001:0db8:0000:0000:0000:0000:0000:0000
 2001:db8::
 ```
 
-### To divide a /64 subnet into 4 /66 subnets:
+### To divide a `/64` subnet into 4 `/66` subnets:
 ```bash
 ip6 -d 2001:db8:: 64 66
 2001:0db8:0000:0000:0000:0000:0000:0000
@@ -117,7 +117,7 @@ ip6 -d 2001:db8:: 64 66
 2001:0db8:0000:0000:c000:0000:0000:0000
 ```
 
-### To divide a /64 subnet into /80 subnets, but outputs only 5 subnets:
+### To divide a `/64` subnet into `/80` subnets, but outputs only 5 subnets:
 ```bash
 ip6 -d 2001:db8:: 64 80 5
 2001:0db8:0000:0000:0001:0000:0000:0000
@@ -127,7 +127,7 @@ ip6 -d 2001:db8:: 64 80 5
 2001:0db8:0000:0000:0005:0000:0000:0000
 ```
 
-### To divide a /64 subnet into /80 subnets, but outputs only 5 subnets in abbreviated mode:
+### To divide a `/64` subnet into `/80` subnets, but outputs only 5 subnets in abbreviated mode:
 ```bash
 ip6 -d -s 2001:db8:: 64 80 5
 2001:db8:0:0:1::
