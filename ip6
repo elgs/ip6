@@ -60,7 +60,7 @@
         console.log();
         console.log('   To calculate the range and size of a /64 subnet divided into /120 subnets:');
         console.log('   ip6 -r -s 2001:db8:: 64 80');
-        console.log('   {"start":"2001:db8::","end":"2001:db8::ffff:ffff:ffff:ff00","size":256}');
+        console.log('   {"start":"2001:db8::","end":"2001:db8::ffff:ffff:ffff:ff00","size"::65536}');
     } else if (input[0] === '-v' || input[0] === '--version') {
         console.log('ip6 version: ', pjson.version);
     } else if (input[0] === '-n' || input[0] === '--normalize') {

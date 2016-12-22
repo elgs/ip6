@@ -67,13 +67,13 @@
             let n65 = ip6.range("2607:5300:60:1234::", 64, 65, true);
             expect(n65.start).toBe('2607:5300:60:1234::');
             expect(n65.end).toBe('2607:5300:60:1234:8000::');
-            expect(n65.size).toBe(9223372036854776000);
+            expect(n65.size).toBe(2);
         });
 
         it('should calculate the first and the last address of an IPv6 subnet.', function () {
-            let n120 = ip6.range("2607:5300:60:1234::", 64, 120);
-            expect(n120.start).toBe('2607:5300:0060:1234:0000:0000:0000:0000');
-            expect(n120.end).toBe('2607:5300:0060:1234:ffff:ffff:ffff:ff00');
+            let n120 = ip6.range("2607:5300:60::", 48, 56);
+            expect(n120.start).toBe('2607:5300:0060:0000:0000:0000:0000:0000');
+            expect(n120.end).toBe('2607:5300:0060:ff00:0000:0000:0000:0000');
             expect(n120.size).toBe(256);
         });
     });

@@ -195,13 +195,13 @@
             return {
                 start: abbreviate(_bin2addr(binStartAddr)),
                 end: abbreviate(_bin2addr(binEndAddr)),
-                size: Math.pow(2, 128 - mask1)
+                size: Math.pow(2, mask1 - mask0)
             };
         } else {
             return {
                 start: _bin2addr(binStartAddr),
                 end: _bin2addr(binEndAddr),
-                size: Math.pow(2, 128 - mask1)
+                size: Math.pow(2, mask1 - mask0)
             };
         }
     };
