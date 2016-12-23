@@ -80,4 +80,11 @@
             console.log(r128);
         });
     });
+
+    describe('To generate PTR records for DNS zone file.', function () {
+        it('should generate a PTR record for DNS zone file.', function () {
+            let ptr = ip6.ptr("2607:5300:60:1234:cafe:babe:dead:beef", 64);
+            expect(ptr).toBe('f.e.e.b.d.a.e.d.e.b.a.b.e.f.a.c');
+        });
+    });
 })();

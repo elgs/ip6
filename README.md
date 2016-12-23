@@ -128,6 +128,13 @@ console.log(range);
  */
 ```
 
+### To generate a PTR record for DNS zone file:
+```javascript
+let ptr = ip6.ptr("2607:5300:60:1234:cafe:babe:dead:beef", 64);
+console.log(ptr);
+// f.e.e.b.d.a.e.d.e.b.a.b.e.f.a.c
+```
+
 ## Standalone Usage
 ### To normalize an IPv6 address:
 ```bash
@@ -184,6 +191,12 @@ ip6 -r -s 2607:5300:60:: 48 56 5
 ```bash
 ip6 -R -s 2607:5300:60:: 48 56
 {"start":"2607:5300:60::","end":"2607:5300:60:ff00::","size":256}
+```
+
+### To generate a PTR record for DNS zone file:
+```bash
+ip6 2607:5300:60:1234:cafe:babe:dead:beef 64
+f.e.e.b.d.a.e.d.e.b.a.b.e.f.a.c
 ```
 
 ## License

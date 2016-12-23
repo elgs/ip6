@@ -243,17 +243,32 @@
         return ret;
     };
 
+    let ptr = function (addr, mask) {
+        if (!_validate(addr)) {
+            throw new Error('Invalid address: ' + addr);
+        }
+        mask *= 1;
+        if (mask < 1 || mask > 128 || Math.floor(mask / 4) != mask / 4) {
+            throw new Error('Invalid masks.');
+        }
+        let fullAddr = normalize(addr);
+        let reverse = fullAddr.replace(/:/g, '').split('').reverse();
+        return reverse.slice(0, (128 - mask) / 4).join('.');
+    };
+
     if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         exports.normalize = normalize;
         exports.abbreviate = abbreviate;
         exports.divideSubnet = divideSubnet;
         exports.range = range;
         exports.randomSubnet = randomSubnet;
+        exports.ptr = ptr;
     } else {
         window.normalize = normalize;
         window.abbreviate = abbreviate;
         window.divideSubnet = divideSubnet;
         window.range = range;
         window.randomSubnet = randomSubnet;
+        window.ptr = ptr;
     }
 })();
