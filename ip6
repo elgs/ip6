@@ -99,13 +99,13 @@
         try {
             if (abbr) {
                 const output = ip6.divideSubnet(input[2], input[3], input[4], input[5], true);
-                for (let i in output) {
-                    console.log(output[i]);
+                for (let subnet of output) {
+                    console.log(subnet);
                 }
             } else {
                 const output = ip6.divideSubnet(input[1], input[2], input[3], input[4]);
-                for (let i in output) {
-                    console.log(output[i]);
+                for (let subnet of output) {
+                    console.log(subnet);
                 }
             }
         } catch (e) {
@@ -119,13 +119,13 @@
         try {
             if (abbr) {
                 const output = ip6.randomSubnet(input[2], input[3], input[4], input[5], true);
-                for (let i in output) {
-                    console.log(output[i]);
+                for (let subnet of output) {
+                    console.log(subnet);
                 }
             } else {
                 const output = ip6.randomSubnet(input[1], input[2], input[3], input[4]);
-                for (let i in output) {
-                    console.log(output[i]);
+                for (let subnet of output) {
+                    console.log(subnet);
                 }
             }
         } catch (e) {

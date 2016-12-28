@@ -120,10 +120,8 @@
         let nAddr = normalize(addr);
         let sections = nAddr.split(":");
         let binAddr = '';
-        for (let i in sections) {
-            let part = sections[i];
-            let section = _leftPad(_hex2bin(part), '0', 16);
-            binAddr += section;
+        for (let section of sections) {
+            binAddr += _leftPad(_hex2bin(section), '0', 16);
         }
         return binAddr;
     };
