@@ -11,7 +11,7 @@ IPv6 address helper utilities.
 ## Module Usage
 ### To `normalize` IPv6 addresses
 ```javascript
-let ip6 = require('ip6')
+let ip6 = require('ip6');
 
 console.log(ip6.normalize('2404:6800:4003:808::200e'));
 // 2404:6800:4003:0808:0000:0000:0000:200e
@@ -195,7 +195,7 @@ ip6 -R -s 2607:5300:60:: 48 56
 
 ### To generate a PTR record for DNS zone file:
 ```bash
-ip6 2607:5300:60:1234:cafe:babe:dead:beef 64
+ip6 -p 2607:5300:60:1234:cafe:babe:dead:beef 64
 f.e.e.b.d.a.e.d.e.b.a.b.e.f.a.c
 ```
 

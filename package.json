@@ -1,6 +1,6 @@
 {
   "name": "ip6",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "IPv6 address helper utilities.",
   "main": "ip6.js",
   "bin": {
