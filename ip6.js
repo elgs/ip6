@@ -8,6 +8,8 @@
         if (!_validate(a)) {
             throw new Error('Invalid address: ' + a);
         }
+        a = a.toLowerCase()
+        
         let nh = a.split(/\:\:/g);
         if (nh.length > 2) {
             throw new Error('Invalid address: ' + a);
