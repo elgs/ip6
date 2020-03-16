@@ -135,7 +135,7 @@ const _bin2addr = function (bin) {
    return addr.join(':');
 };
 
-const divideSubnet = function (addr, mask0, mask1, limit, abbr) {
+export const divideSubnet = function (addr, mask0, mask1, limit, abbr) {
    if (!_validate(addr)) {
       throw new Error('Invalid address: ' + addr);
    }
@@ -172,7 +172,7 @@ const divideSubnet = function (addr, mask0, mask1, limit, abbr) {
    return ret;
 };
 
-const range = function (addr, mask0, mask1, abbr) {
+export const range = function (addr, mask0, mask1, abbr) {
    if (!_validate(addr)) {
       throw new Error('Invalid address: ' + addr);
    }
@@ -202,7 +202,7 @@ const range = function (addr, mask0, mask1, abbr) {
    }
 };
 
-const randomSubnet = function (addr, mask0, mask1, limit, abbr) {
+export const randomSubnet = function (addr, mask0, mask1, limit, abbr) {
    if (!_validate(addr)) {
       throw new Error('Invalid address: ' + addr);
    }
@@ -240,7 +240,7 @@ const randomSubnet = function (addr, mask0, mask1, limit, abbr) {
    return ret;
 };
 
-const ptr = function (addr, mask) {
+export const ptr = function (addr, mask) {
    if (!_validate(addr)) {
       throw new Error('Invalid address: ' + addr);
    }
