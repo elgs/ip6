@@ -1,7 +1,7 @@
 /**
  * Created by elgs on 3/5/16.
  */
-const normalize = function (a) {
+export const normalize = function (a) {
    if (!_validate(a)) {
       throw new Error('Invalid address: ' + a);
    }
@@ -41,7 +41,7 @@ const normalize = function (a) {
    return sections.join(':');
 };
 
-const abbreviate = function (a) {
+export const abbreviate = function (a) {
    if (!_validate(a)) {
       throw new Error('Invalid address: ' + a);
    }
@@ -135,7 +135,7 @@ const _bin2addr = function (bin) {
    return addr.join(':');
 };
 
-const divideSubnet = function (addr, mask0, mask1, limit, abbr) {
+export const divideSubnet = function (addr, mask0, mask1, limit, abbr) {
    if (!_validate(addr)) {
       throw new Error('Invalid address: ' + addr);
    }
@@ -172,7 +172,7 @@ const divideSubnet = function (addr, mask0, mask1, limit, abbr) {
    return ret;
 };
 
-const range = function (addr, mask0, mask1, abbr) {
+export const range = function (addr, mask0, mask1, abbr) {
    if (!_validate(addr)) {
       throw new Error('Invalid address: ' + addr);
    }
@@ -202,7 +202,7 @@ const range = function (addr, mask0, mask1, abbr) {
    }
 };
 
-const randomSubnet = function (addr, mask0, mask1, limit, abbr) {
+export const randomSubnet = function (addr, mask0, mask1, limit, abbr) {
    if (!_validate(addr)) {
       throw new Error('Invalid address: ' + addr);
    }
@@ -240,7 +240,7 @@ const randomSubnet = function (addr, mask0, mask1, limit, abbr) {
    return ret;
 };
 
-const ptr = function (addr, mask) {
+export const ptr = function (addr, mask) {
    if (!_validate(addr)) {
       throw new Error('Invalid address: ' + addr);
    }
@@ -252,19 +252,3 @@ const ptr = function (addr, mask) {
    const reverse = fullAddr.replace(/:/g, '').split('').reverse();
    return reverse.slice(0, (128 - mask) / 4).join('.');
 };
-
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-   exports.normalize = normalize;
-   exports.abbreviate = abbreviate;
-   exports.divideSubnet = divideSubnet;
-   exports.range = range;
-   exports.randomSubnet = randomSubnet;
-   exports.ptr = ptr;
-} else {
-   window.normalize = normalize;
-   window.abbreviate = abbreviate;
-   window.divideSubnet = divideSubnet;
-   window.range = range;
-   window.randomSubnet = randomSubnet;
-   window.ptr = ptr;
-}
