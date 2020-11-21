@@ -1,5 +1,5 @@
 # ip6
-IPv6 address helper utilities.
+IPv6 address helper utilities. <a href="https://ip6.sh">ip6.sh</a>
 
 ## Installation
 ### Module
@@ -202,7 +202,7 @@ f.e.e.b.d.a.e.d.e.b.a.b.e.f.a.c
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2016 Elgs Qian Chen
+Copyright (c) 2016 Qian Chen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

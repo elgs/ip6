@@ -1,10 +1,10 @@
 {
   "name": "ip6",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "IPv6 address helper utilities.",
   "main": "ip6.js",
   "bin": {
-    "ip6": "./ip6"
+    "ip6": "./ip6-bin.js"
   },
   "repository": {
     "type": "git",
@@ -15,7 +15,7 @@
     "cli",
     "network"
   ],
-  "author": "Elgs Qian Chen",
+  "author": "Qian Chen",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/elgs/ip6/issues"
