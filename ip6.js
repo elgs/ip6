@@ -203,6 +203,10 @@ const range = function (addr, mask0, mask1, abbr) {
 };
 
 const rangeBigInt = function (addr, mask0, mask1, abbr) {
+   if (typeof BigInt === 'undefined') {
+      return range(addr, mask0, mask1, abbr);
+   }
+
    if (!_validate(addr)) {
       throw new Error('Invalid address: ' + addr);
    }
