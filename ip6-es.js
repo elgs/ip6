@@ -202,6 +202,36 @@ export const range = function (addr, mask0, mask1, abbr) {
    }
 };
 
+export const rangeBigInt = function (addr, mask0, mask1, abbr) {
+   if (!_validate(addr)) {
+      throw new Error('Invalid address: ' + addr);
+   }
+   mask0 *= 1;
+   mask1 *= 1;
+   mask1 = mask1 || 128;
+   if (mask0 < 1 || mask1 < 1 || mask0 > 128 || mask1 > 128 || mask0 > mask1) {
+      throw new Error('Invalid masks.');
+   }
+   const binAddr = _addr2bin(addr);
+   const binNetPart = binAddr.substr(0, mask0);
+   const binHostPart = '0'.repeat(128 - mask1);
+   const binStartAddr = binNetPart + '0'.repeat(mask1 - mask0) + binHostPart;
+   const binEndAddr = binNetPart + '1'.repeat(mask1 - mask0) + binHostPart;
+   if (!!abbr) {
+      return {
+         start: abbreviate(_bin2addr(binStartAddr)),
+         end: abbreviate(_bin2addr(binEndAddr)),
+         size: BigInt(2 ** (mask1 - mask0)).toString()
+      };
+   } else {
+      return {
+         start: _bin2addr(binStartAddr),
+         end: _bin2addr(binEndAddr),
+         size: BigInt(2 ** (mask1 - mask0)).toString()
+      };
+   }
+};
+
 export const randomSubnet = function (addr, mask0, mask1, limit, abbr) {
    if (!_validate(addr)) {
       throw new Error('Invalid address: ' + addr);
