@@ -2,9 +2,8 @@
  * Created by elgs on 3/5/16.
  */
 const normalize = function (a) {
-   if (!_validate(a)) {
-      throw new Error('Invalid address: ' + a);
-   }
+   validate(a);
+
    a = a.toLowerCase()
 
    const nh = a.split(/\:\:/g);
@@ -13,13 +12,13 @@ const normalize = function (a) {
    }
 
    let sections = [];
-   if (nh.length == 1) {
+   if (nh.length === 1) {
       // full mode
       sections = a.split(/\:/g);
       if (sections.length !== 8) {
          throw new Error('Invalid address: ' + a);
       }
-   } else if (nh.length == 2) {
+   } else if (nh.length === 2) {
       // compact mode
       const n = nh[0];
       const h = nh[1];
@@ -42,9 +41,7 @@ const normalize = function (a) {
 };
 
 const abbreviate = function (a) {
-   if (!_validate(a)) {
-      throw new Error('Invalid address: ' + a);
-   }
+   validate(a);
    a = normalize(a);
    a = a.replace(/0000/g, 'g');
    a = a.replace(/\:000/g, ':');
@@ -96,8 +93,34 @@ const abbreviate = function (a) {
 };
 
 // Basic validation
-const _validate = function (a) {
-   return /^[a-f0-9\\:]+$/ig.test(a);
+const validate = function (a) {
+   const ns = [];
+   const nh = a.split('::');
+   if (nh.length > 2) {
+      throw new Error('Invalid address: ' + a);
+   } else if (nh.length === 2) {
+      if (nh[0].startsWith(':') || nh[0].endsWith(':') || nh[1].startsWith(':') || nh[1].endsWith(':')) {
+         throw new Error('Invalid address: ' + a);
+      }
+
+      ns.push(... (nh[0].split(':').filter(a => a)));
+      ns.push(... (nh[1].split(':').filter(a => a)));
+      if (ns > 7) {
+         throw new Error('Invalid address: ' + a);
+      }
+   } else if (nh.length === 1) {
+      ns.push(... (nh[0].split(':').filter(a => a)));
+      if (ns.length > 8) {
+         throw new Error('Invalid address: ' + a);
+      }
+   }
+
+   for (const n of ns) {
+      const match = n.match(/^[a-f0-9]{1,4}$/i);
+      if (match?.[0] !== n) {
+         throw new Error('Invalid address: ' + a);
+      }
+   }
 };
 
 const _leftPad = function (d, p, n) {
@@ -136,9 +159,7 @@ const _bin2addr = function (bin) {
 };
 
 const divideSubnet = function (addr, mask0, mask1, limit, abbr) {
-   if (!_validate(addr)) {
-      throw new Error('Invalid address: ' + addr);
-   }
+   validate(addr);
    mask0 *= 1;
    mask1 *= 1;
    limit *= 1;
@@ -173,9 +194,7 @@ const divideSubnet = function (addr, mask0, mask1, limit, abbr) {
 };
 
 const range = function (addr, mask0, mask1, abbr) {
-   if (!_validate(addr)) {
-      throw new Error('Invalid address: ' + addr);
-   }
+   validate(addr);
    mask0 *= 1;
    mask1 *= 1;
    mask1 = mask1 || 128;
@@ -207,9 +226,7 @@ const rangeBigInt = function (addr, mask0, mask1, abbr) {
       return range(addr, mask0, mask1, abbr);
    }
 
-   if (!_validate(addr)) {
-      throw new Error('Invalid address: ' + addr);
-   }
+   validate(addr);
    mask0 *= 1;
    mask1 *= 1;
    mask1 = mask1 || 128;
@@ -237,9 +254,7 @@ const rangeBigInt = function (addr, mask0, mask1, abbr) {
 };
 
 const randomSubnet = function (addr, mask0, mask1, limit, abbr) {
-   if (!_validate(addr)) {
-      throw new Error('Invalid address: ' + addr);
-   }
+   validate(addr);
    mask0 *= 1;
    mask1 *= 1;
    limit *= 1;
@@ -275,9 +290,7 @@ const randomSubnet = function (addr, mask0, mask1, limit, abbr) {
 };
 
 const ptr = function (addr, mask) {
-   if (!_validate(addr)) {
-      throw new Error('Invalid address: ' + addr);
-   }
+   validate(addr);
    mask *= 1;
    if (mask < 1 || mask > 128 || Math.floor(mask / 4) != mask / 4) {
       throw new Error('Invalid masks.');
@@ -288,6 +301,7 @@ const ptr = function (addr, mask) {
 };
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+   exports.validate = validate;
    exports.normalize = normalize;
    exports.abbreviate = abbreviate;
    exports.divideSubnet = divideSubnet;
@@ -296,11 +310,12 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
    exports.randomSubnet = randomSubnet;
    exports.ptr = ptr;
 } else {
-   window.normalize = normalize;
-   window.abbreviate = abbreviate;
-   window.divideSubnet = divideSubnet;
-   window.range = range;
-   window.rangeBigInt = rangeBigInt;
-   window.randomSubnet = randomSubnet;
-   window.ptr = ptr;
+   window.ip6_validate = validate;
+   window.ip6_normalize = normalize;
+   window.ip6_abbreviate = abbreviate;
+   window.ip6_divideSubnet = divideSubnet;
+   window.ip6_range = range;
+   window.ip6_rangeBigInt = rangeBigInt;
+   window.ip6_randomSubnet = randomSubnet;
+   window.ip6_ptr = ptr;
 }
