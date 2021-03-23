@@ -15,6 +15,8 @@ describe('To validate IPv6 addresses', function () {
       expect(function () { ip6.validate('1:1:1:1:1:1:1:1:1') }).toThrow();
 
       expect(function () { ip6.validate('1111::1111') }).not.toThrow();
+      expect(function () { ip6.validate('1111::') }).not.toThrow();
+      expect(function () { ip6.validate('1111:1111::') }).not.toThrow();
    });
 });
 

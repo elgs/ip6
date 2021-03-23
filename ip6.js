@@ -105,7 +105,7 @@ const validate = function (a) {
 
       ns.push(... (nh[0].split(':').filter(a => a)));
       ns.push(... (nh[1].split(':').filter(a => a)));
-      if (ns > 7) {
+      if (ns.length > 7) {
          throw new Error('Invalid address: ' + a);
       }
    } else if (nh.length === 1) {
