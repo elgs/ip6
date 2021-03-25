@@ -110,7 +110,7 @@ export const validate = function (a) {
       }
    } else if (nh.length === 1) {
       ns.push(... (nh[0].split(':').filter(a => a)));
-      if (ns.length > 8) {
+      if (ns.length !== 8) {
          throw new Error('Invalid address: ' + a);
       }
    }
