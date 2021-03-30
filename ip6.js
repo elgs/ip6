@@ -117,7 +117,7 @@ const validate = function (a) {
 
    for (const n of ns) {
       const match = n.match(/^[a-f0-9]{1,4}$/i);
-      if (match?.[0] !== n) {
+      if (!match || match[0] !== n) {
          throw new Error('Invalid address: ' + a);
       }
    }
