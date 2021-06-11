@@ -164,7 +164,7 @@ const divideSubnet = function (addr, mask0, mask1, limit, abbr) {
    mask1 *= 1;
    limit *= 1;
    mask1 = mask1 || 128;
-   if (mask0 < 1 || mask1 < 1 || mask0 > 128 || mask1 > 128 || mask0 > mask1) {
+   if (mask0 < 0 || mask1 < 0 || mask0 > 128 || mask1 > 128 || mask0 > mask1) {
       throw new Error('Invalid masks.');
    }
    const ret = [];
@@ -198,7 +198,7 @@ const range = function (addr, mask0, mask1, abbr) {
    mask0 *= 1;
    mask1 *= 1;
    mask1 = mask1 || 128;
-   if (mask0 < 1 || mask1 < 1 || mask0 > 128 || mask1 > 128 || mask0 > mask1) {
+   if (mask0 < 0 || mask1 < 0 || mask0 > 128 || mask1 > 128 || mask0 > mask1) {
       throw new Error('Invalid masks.');
    }
    const binAddr = _addr2bin(addr);
@@ -230,7 +230,7 @@ const rangeBigInt = function (addr, mask0, mask1, abbr) {
    mask0 *= 1;
    mask1 *= 1;
    mask1 = mask1 || 128;
-   if (mask0 < 1 || mask1 < 1 || mask0 > 128 || mask1 > 128 || mask0 > mask1) {
+   if (mask0 < 0 || mask1 < 0 || mask0 > 128 || mask1 > 128 || mask0 > mask1) {
       throw new Error('Invalid masks.');
    }
    const binAddr = _addr2bin(addr);
@@ -260,7 +260,7 @@ const randomSubnet = function (addr, mask0, mask1, limit, abbr) {
    limit *= 1;
    mask1 = mask1 || 128;
    limit = limit || 1;
-   if (mask0 < 1 || mask1 < 1 || mask0 > 128 || mask1 > 128 || mask0 > mask1) {
+   if (mask0 < 0 || mask1 < 0 || mask0 > 128 || mask1 > 128 || mask0 > mask1) {
       throw new Error('Invalid masks.');
    }
    const ret = [];
@@ -292,7 +292,7 @@ const randomSubnet = function (addr, mask0, mask1, limit, abbr) {
 const ptr = function (addr, mask) {
    validate(addr);
    mask *= 1;
-   if (mask < 1 || mask > 128 || Math.floor(mask / 4) != mask / 4) {
+   if (mask < 0 || mask > 128 || Math.floor(mask / 4) != mask / 4) {
       throw new Error('Invalid masks.');
    }
    const fullAddr = normalize(addr);

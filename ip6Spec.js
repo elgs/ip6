@@ -92,6 +92,13 @@ describe('To calculate the range of an IPv6 subnet.', function () {
    });
 
    it('should calculate the first and the last address of an IPv6 subnet.', function () {
+      let n128 = ip6.rangeBigInt("::", 0, 128, false);
+      expect(n128.start).toBe('0000:0000:0000:0000:0000:0000:0000:0000');
+      expect(n128.end).toBe('ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff');
+      expect(n128.size).toBe('340282366920938463463374607431768211456');
+   });
+
+   it('should calculate the first and the last address of an IPv6 subnet.', function () {
       let n56 = ip6.range("2607:5300:60::", 48, 56);
       expect(n56.start).toBe('2607:5300:0060:0000:0000:0000:0000:0000');
       expect(n56.end).toBe('2607:5300:0060:ff00:0000:0000:0000:0000');
@@ -104,7 +111,8 @@ describe('To calculate the range of an IPv6 subnet.', function () {
 
 describe('To generate PTR records for DNS zone file.', function () {
    it('should generate a PTR record for DNS zone file.', function () {
-      let ptr = ip6.ptr("2607:5300:60:1234:cafe:babe:dead:beef", 64);
-      expect(ptr).toBe('f.e.e.b.d.a.e.d.e.b.a.b.e.f.a.c');
+      expect(ip6.ptr("2607:5300:60:1234:cafe:babe:dead:beef", 64)).toBe('f.e.e.b.d.a.e.d.e.b.a.b.e.f.a.c');
+      expect(ip6.ptr("2607:5300:60:1234:cafe:babe:dead:beef", 128)).toBe('');
+      expect(ip6.ptr("2607:5300:60:1234:cafe:babe:dead:beef", 0)).toBe('f.e.e.b.d.a.e.d.e.b.a.b.e.f.a.c.4.3.2.1.0.6.0.0.0.0.3.5.7.0.6.2');
    });
 });
