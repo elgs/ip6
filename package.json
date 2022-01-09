@@ -1,10 +1,13 @@
 {
    "name": "ip6",
-   "version": "0.2.7",
+   "version": "0.2.8",
    "description": "IPv6 address helper utilities.",
    "main": "ip6.js",
    "bin": {
       "ip6": "./ip6"
+   },
+   "scripts": {
+      "test": "npx jasmine tests.js"
    },
    "repository": {
       "type": "git",
@@ -22,6 +25,6 @@
    },
    "homepage": "https://github.com/elgs/ip6#readme",
    "devDependencies": {
-      "jasmine": "^3.7.0"
+      "jasmine": "^4.0.1"
    }
 }
