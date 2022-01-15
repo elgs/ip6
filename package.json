@@ -25,6 +25,6 @@
    },
    "homepage": "https://github.com/elgs/ip6#readme",
    "devDependencies": {
-      "jasmine": "^4.0.1"
+      "jasmine": "^4.0.2"
    }
 }
