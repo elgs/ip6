@@ -1,7 +1,7 @@
 /**
  * Created by elgs on 3/5/16.
  */
-export const normalize = function (a) {
+const normalize = function (a) {
    validate(a);
 
    a = a.toLowerCase()
@@ -40,7 +40,7 @@ export const normalize = function (a) {
    return sections.join(':');
 };
 
-export const abbreviate = function (a) {
+const abbreviate = function (a) {
    validate(a);
    a = normalize(a);
    a = a.replace(/0000/g, 'g');
@@ -93,7 +93,7 @@ export const abbreviate = function (a) {
 };
 
 // Basic validation
-export const validate = function (a) {
+const validate = function (a) {
    const ns = [];
    const nh = a.split('::');
    if (nh.length > 2) {
@@ -158,7 +158,7 @@ const _bin2addr = function (bin) {
    return addr.join(':');
 };
 
-export const divideSubnet = function (addr, mask0, mask1, limit, abbr) {
+const divideSubnet = function (addr, mask0, mask1, limit, abbr) {
    validate(addr);
    mask0 *= 1;
    mask1 *= 1;
@@ -193,7 +193,7 @@ export const divideSubnet = function (addr, mask0, mask1, limit, abbr) {
    return ret;
 };
 
-export const range = function (addr, mask0, mask1, abbr) {
+const range = function (addr, mask0, mask1, abbr) {
    validate(addr);
    mask0 *= 1;
    mask1 *= 1;
@@ -221,7 +221,7 @@ export const range = function (addr, mask0, mask1, abbr) {
    }
 };
 
-export const rangeBigInt = function (addr, mask0, mask1, abbr) {
+const rangeBigInt = function (addr, mask0, mask1, abbr) {
    if (typeof BigInt === 'undefined') {
       return range(addr, mask0, mask1, abbr);
    }
@@ -253,7 +253,7 @@ export const rangeBigInt = function (addr, mask0, mask1, abbr) {
    }
 };
 
-export const randomSubnet = function (addr, mask0, mask1, limit, abbr) {
+const randomSubnet = function (addr, mask0, mask1, limit, abbr) {
    validate(addr);
    mask0 *= 1;
    mask1 *= 1;
@@ -289,7 +289,7 @@ export const randomSubnet = function (addr, mask0, mask1, limit, abbr) {
    return ret;
 };
 
-export const ptr = function (addr, mask) {
+const ptr = function (addr, mask) {
    validate(addr);
    mask *= 1;
    if (mask < 0 || mask > 128 || Math.floor(mask / 4) != mask / 4) {
@@ -298,4 +298,15 @@ export const ptr = function (addr, mask) {
    const fullAddr = normalize(addr);
    const reverse = fullAddr.replace(/:/g, '').split('').reverse();
    return reverse.slice(0, (128 - mask) / 4).join('.');
+};
+
+export default {
+   normalize,
+   abbreviate,
+   validate,
+   divideSubnet,
+   range,
+   rangeBigInt,
+   randomSubnet,
+   ptr,
 };

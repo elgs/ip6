@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import * as ip6 from './ip6.js';
+import ip6 from './ip6.js';
 
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);

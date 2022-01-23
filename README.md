@@ -11,7 +11,7 @@ IPv6 address helper utilities. <a href="https://ip6.sh">ip6.sh</a>
 ## Module Usage
 ### To `normalize` IPv6 addresses
 ```javascript
-let ip6 = require('ip6');
+import ip6 from 'ip6';
 
 console.log(ip6.normalize('2404:6800:4003:808::200e'));
 // 2404:6800:4003:0808:0000:0000:0000:200e
