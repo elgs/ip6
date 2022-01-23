@@ -1,14 +1,15 @@
 {
    "name": "ip6",
-   "version": "0.2.8",
+   "version": "0.2.9",
    "description": "IPv6 address helper utilities.",
    "main": "ip6.js",
    "bin": {
-      "ip6": "./ip6"
+      "ip6": "./ip6-cli.js"
    },
    "scripts": {
       "test": "npx jasmine tests.js"
    },
+   "type": "module",
    "repository": {
       "type": "git",
       "url": "git+https://github.com/elgs/ip6.git"

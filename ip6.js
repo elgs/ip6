@@ -1,7 +1,7 @@
 /**
  * Created by elgs on 3/5/16.
  */
-const normalize = function (a) {
+export const normalize = function (a) {
    validate(a);
 
    a = a.toLowerCase()
@@ -40,7 +40,7 @@ const normalize = function (a) {
    return sections.join(':');
 };
 
-const abbreviate = function (a) {
+export const abbreviate = function (a) {
    validate(a);
    a = normalize(a);
    a = a.replace(/0000/g, 'g');
@@ -93,7 +93,7 @@ const abbreviate = function (a) {
 };
 
 // Basic validation
-const validate = function (a) {
+export const validate = function (a) {
    const ns = [];
    const nh = a.split('::');
    if (nh.length > 2) {
@@ -117,7 +117,7 @@ const validate = function (a) {
 
    for (const n of ns) {
       const match = n.match(/^[a-f0-9]{1,4}$/i);
-      if (!match || match[0] !== n) {
+      if (match?.[0] !== n) {
          throw new Error('Invalid address: ' + a);
       }
    }
@@ -158,7 +158,7 @@ const _bin2addr = function (bin) {
    return addr.join(':');
 };
 
-const divideSubnet = function (addr, mask0, mask1, limit, abbr) {
+export const divideSubnet = function (addr, mask0, mask1, limit, abbr) {
    validate(addr);
    mask0 *= 1;
    mask1 *= 1;
@@ -193,7 +193,7 @@ const divideSubnet = function (addr, mask0, mask1, limit, abbr) {
    return ret;
 };
 
-const range = function (addr, mask0, mask1, abbr) {
+export const range = function (addr, mask0, mask1, abbr) {
    validate(addr);
    mask0 *= 1;
    mask1 *= 1;
@@ -221,7 +221,7 @@ const range = function (addr, mask0, mask1, abbr) {
    }
 };
 
-const rangeBigInt = function (addr, mask0, mask1, abbr) {
+export const rangeBigInt = function (addr, mask0, mask1, abbr) {
    if (typeof BigInt === 'undefined') {
       return range(addr, mask0, mask1, abbr);
    }
@@ -253,7 +253,7 @@ const rangeBigInt = function (addr, mask0, mask1, abbr) {
    }
 };
 
-const randomSubnet = function (addr, mask0, mask1, limit, abbr) {
+export const randomSubnet = function (addr, mask0, mask1, limit, abbr) {
    validate(addr);
    mask0 *= 1;
    mask1 *= 1;
@@ -289,7 +289,7 @@ const randomSubnet = function (addr, mask0, mask1, limit, abbr) {
    return ret;
 };
 
-const ptr = function (addr, mask) {
+export const ptr = function (addr, mask) {
    validate(addr);
    mask *= 1;
    if (mask < 0 || mask > 128 || Math.floor(mask / 4) != mask / 4) {
@@ -299,23 +299,3 @@ const ptr = function (addr, mask) {
    const reverse = fullAddr.replace(/:/g, '').split('').reverse();
    return reverse.slice(0, (128 - mask) / 4).join('.');
 };
-
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-   exports.validate = validate;
-   exports.normalize = normalize;
-   exports.abbreviate = abbreviate;
-   exports.divideSubnet = divideSubnet;
-   exports.range = range;
-   exports.rangeBigInt = rangeBigInt;
-   exports.randomSubnet = randomSubnet;
-   exports.ptr = ptr;
-} else {
-   window.ip6_validate = validate;
-   window.ip6_normalize = normalize;
-   window.ip6_abbreviate = abbreviate;
-   window.ip6_divideSubnet = divideSubnet;
-   window.ip6_range = range;
-   window.ip6_rangeBigInt = rangeBigInt;
-   window.ip6_randomSubnet = randomSubnet;
-   window.ip6_ptr = ptr;
-}
