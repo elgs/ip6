@@ -48,6 +48,8 @@ const abbreviate = function (a) {
    a = a.replace(/\:00/g, ':');
    a = a.replace(/\:0/g, ':');
    a = a.replace(/g/g, '0');
+   // remove leading zeros of a
+   a = a.replace(/^0+/, '');
    const sections = a.split(/\:/g);
    let zPreviousFlag = false;
    let zeroStartIndex = -1;

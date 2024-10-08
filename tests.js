@@ -46,6 +46,14 @@ describe('To abbreviate IPv6 addresses.', function () {
       expect(ip6.abbreviate('2001:0001:0002:0003:0004:0005:0006:0007')).toBe('2001:1:2:3:4:5:6:7');
       expect(ip6.abbreviate('2001:0000:0000:0000:1111:0000:0000:0000')).toBe('2001::1111:0:0:0');
       expect(ip6.abbreviate('2001:db8:0:0:0:0:2:1')).toBe('2001:db8::2:1');
+
+      expect(ip6.abbreviate('::0000:1')).toBe('::1');
+      expect(ip6.abbreviate('000::0000:1')).toBe('::1');
+      expect(ip6.abbreviate('0000::0000:1')).toBe('::1');
+      expect(ip6.abbreviate('1:0000::0000:1')).toBe('1::1');
+      expect(ip6.abbreviate('01:0000::0000:1')).toBe('1::1');
+      expect(ip6.abbreviate('12:0000::0000:1')).toBe('12::1');
+      expect(ip6.abbreviate('123:0000::0000:1')).toBe('123::1');
    });
 });
 

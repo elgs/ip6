@@ -1,6 +1,6 @@
 {
    "name": "ip6",
-   "version": "0.2.10",
+   "version": "0.2.11",
    "description": "IPv6 address helper utilities.",
    "main": "ip6.js",
    "bin": {
@@ -26,6 +26,6 @@
    },
    "homepage": "https://github.com/elgs/ip6#readme",
    "devDependencies": {
-      "jasmine": "^4.4.0"
+      "jasmine": "^5.3.1"
    }
 }
