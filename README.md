@@ -1,5 +1,5 @@
 # ip6
-IPv6 address helper utilities. <a href="https://ip6.sh">ip6.sh</a>
+IPv6 address helper utilities. <a href="https://ip6.az.ht">ip6.az.ht</a>
 
 ## Installation
 ### Module
