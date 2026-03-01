@@ -85,28 +85,28 @@ describe('To divide IPv6 subnet.', function () {
 });
 
 describe('To calculate the range of an IPv6 subnet.', function () {
-   it('should calculate the first and the last address of an IPv6 subnet.', function () {
+   it('should calculate the first and the last address of an IPv6 subnet 0.', function () {
       let n65 = ip6.range("2607:5300:60:1234::", 64, 65, true);
       expect(n65.start).toBe('2607:5300:60:1234::');
       expect(n65.end).toBe('2607:5300:60:1234:8000::');
       expect(n65.size).toBe(2);
    });
 
-   it('should calculate the first and the last address of an IPv6 subnet.', function () {
+   it('should calculate the first and the last address of an IPv6 subnet 1.', function () {
       let n65 = ip6.rangeBigInt("2607:5300:60:1234::", 64, 65, true);
       expect(n65.start).toBe('2607:5300:60:1234::');
       expect(n65.end).toBe('2607:5300:60:1234:8000::');
       expect(n65.size).toBe('2');
    });
 
-   it('should calculate the first and the last address of an IPv6 subnet.', function () {
+   it('should calculate the first and the last address of an IPv6 subnet 2.', function () {
       let n128 = ip6.rangeBigInt("::", 0, 128, false);
       expect(n128.start).toBe('0000:0000:0000:0000:0000:0000:0000:0000');
       expect(n128.end).toBe('ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff');
       expect(n128.size).toBe('340282366920938463463374607431768211456');
    });
 
-   it('should calculate the first and the last address of an IPv6 subnet.', function () {
+   it('should calculate the first and the last address of an IPv6 subnet 3.', function () {
       let n56 = ip6.range("2607:5300:60::", 48, 56);
       expect(n56.start).toBe('2607:5300:0060:0000:0000:0000:0000:0000');
       expect(n56.end).toBe('2607:5300:0060:ff00:0000:0000:0000:0000');
