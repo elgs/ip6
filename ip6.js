@@ -48,8 +48,8 @@ const abbreviate = function (a) {
    a = a.replace(/\:00/g, ':');
    a = a.replace(/\:0/g, ':');
    a = a.replace(/g/g, '0');
-   // remove leading zeros of a
-   a = a.replace(/^0+/, '');
+   // remove leading zeros of the first group, but keep at least one digit
+   a = a.replace(/^0+(?=[^:])/, '');
    const sections = a.split(/\:/g);
    let zPreviousFlag = false;
    let zeroStartIndex = -1;
@@ -173,7 +173,8 @@ const divideSubnet = function (addr, mask0, mask1, limit, abbr) {
    const binAddr = _addr2bin(addr);
    const binNetPart = binAddr.substr(0, mask0);
    const binHostPart = '0'.repeat(128 - mask1);
-   const numSubnets = Math.pow(2, mask1 - mask0);
+   const subnetBits = mask1 - mask0;
+   const numSubnets = subnetBits <= 53 ? Math.pow(2, subnetBits) : Number.MAX_SAFE_INTEGER;
    for (let i = 0; i < numSubnets; ++i) {
       if (!!limit && i >= limit) {
          break;
@@ -244,13 +245,13 @@ const rangeBigInt = function (addr, mask0, mask1, abbr) {
       return {
          start: abbreviate(_bin2addr(binStartAddr)),
          end: abbreviate(_bin2addr(binEndAddr)),
-         size: BigInt(2 ** (mask1 - mask0)).toString()
+         size: (BigInt(2) ** BigInt(mask1 - mask0)).toString()
       };
    } else {
       return {
          start: _bin2addr(binStartAddr),
          end: _bin2addr(binEndAddr),
-         size: BigInt(2 ** (mask1 - mask0)).toString()
+         size: (BigInt(2) ** BigInt(mask1 - mask0)).toString()
       };
    }
 };
@@ -269,7 +270,8 @@ const randomSubnet = function (addr, mask0, mask1, limit, abbr) {
    const binAddr = _addr2bin(addr);
    const binNetPart = binAddr.substr(0, mask0);
    const binHostPart = '0'.repeat(128 - mask1);
-   const numSubnets = Math.pow(2, mask1 - mask0);
+   const subnetBits = mask1 - mask0;
+   const numSubnets = subnetBits <= 53 ? Math.pow(2, subnetBits) : Number.MAX_SAFE_INTEGER;
    for (let i = 0; i < numSubnets && i < limit; ++i) {
       // generate an binary string with length of mask1 - mask0
       let binSubnet = '';

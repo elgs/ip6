@@ -96,58 +96,33 @@ let pjson = require('./package.json');
          console.error(e.message);
       }
    } else if (input.includes('-d') || input.includes('--divide')) {
-      let abbr = false;
-      if (input.includes('-s') || input.includes('--short')) {
-         abbr = true;
-      }
+      let abbr = input.includes('-s') || input.includes('--short');
+      const args = input.filter(a => !a.startsWith('-'));
       try {
-         if (abbr) {
-            const output = ip6.divideSubnet(input[2], input[3], input[4], input[5], true);
-            for (let subnet of output) {
-               console.log(subnet);
-            }
-         } else {
-            const output = ip6.divideSubnet(input[1], input[2], input[3], input[4]);
-            for (let subnet of output) {
-               console.log(subnet);
-            }
+         const output = ip6.divideSubnet(args[0], args[1], args[2], args[3], abbr);
+         for (let subnet of output) {
+            console.log(subnet);
          }
       } catch (e) {
          console.error(e.message);
       }
    } else if (input.includes('-r') || input.includes('--random')) {
-      let abbr = false;
-      if (input.includes('-s') || input.includes('--short')) {
-         abbr = true;
-      }
+      let abbr = input.includes('-s') || input.includes('--short');
+      const args = input.filter(a => !a.startsWith('-'));
       try {
-         if (abbr) {
-            const output = ip6.randomSubnet(input[2], input[3], input[4], input[5], true);
-            for (let subnet of output) {
-               console.log(subnet);
-            }
-         } else {
-            const output = ip6.randomSubnet(input[1], input[2], input[3], input[4]);
-            for (let subnet of output) {
-               console.log(subnet);
-            }
+         const output = ip6.randomSubnet(args[0], args[1], args[2], args[3], abbr);
+         for (let subnet of output) {
+            console.log(subnet);
          }
       } catch (e) {
          console.error(e.message);
       }
    } else if (input.includes('-R') || input.includes('--range')) {
-      let abbr = false;
-      if (input.includes('-s') || input.includes('--short')) {
-         abbr = true;
-      }
+      let abbr = input.includes('-s') || input.includes('--short');
+      const args = input.filter(a => !a.startsWith('-'));
       try {
-         if (abbr) {
-            const output = ip6.range(input[2], input[3], input[4], true);
-            console.log(JSON.stringify(output));
-         } else {
-            const output = ip6.range(input[1], input[2], input[3]);
-            console.log(JSON.stringify(output));
-         }
+         const output = ip6.range(args[0], args[1], args[2], abbr);
+         console.log(JSON.stringify(output));
       } catch (e) {
          console.error(e.message);
       }

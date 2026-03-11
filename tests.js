@@ -54,6 +54,10 @@ describe('To abbreviate IPv6 addresses.', function () {
       expect(ip6.abbreviate('01:0000::0000:1')).toBe('1::1');
       expect(ip6.abbreviate('12:0000::0000:1')).toBe('12::1');
       expect(ip6.abbreviate('123:0000::0000:1')).toBe('123::1');
+
+      // first group is 0000 but not part of longest zero run
+      expect(ip6.abbreviate('0000:1234:0000:0000:0000:0000:0000:0000')).toBe('0:1234::');
+      expect(ip6.abbreviate('0000:0001:0000:0000:0000:0000:0000:0000')).toBe('0:1::');
    });
 });
 
