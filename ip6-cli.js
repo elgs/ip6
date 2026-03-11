@@ -74,7 +74,7 @@ let pjson = require('./package.json');
       console.log();
       console.log('   To calculate the range and size of a /64 subnet divided into /120 subnets:');
       console.log('   ip6 -R -s 2001:db8:: 64 80');
-      console.log('   {"start":"2001:db8::","end":"2001:db8::ffff:ffff:ffff:ff00","size"::65536}');
+      console.log('   {"start":"2001:db8::","end":"2001:db8::ffff:ffff:ffff:ff00","size":65536}');
       console.log();
       console.log('   To generate a PTR record for DNS zone file:');
       console.log('   ip6 -p 2607:5300:60:1234:cafe:babe:dead:beef 64');
@@ -121,7 +121,7 @@ let pjson = require('./package.json');
       let abbr = input.includes('-s') || input.includes('--short');
       const args = input.filter(a => !a.startsWith('-'));
       try {
-         const output = ip6.range(args[0], args[1], args[2], abbr);
+         const output = ip6.rangeBigInt(args[0], args[1], args[2], abbr);
          console.log(JSON.stringify(output));
       } catch (e) {
          console.error(e.message);
