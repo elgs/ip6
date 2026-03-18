@@ -135,6 +135,45 @@ console.log(ptr);
 // f.e.e.b.d.a.e.d.e.b.a.b.e.f.a.c
 ```
 
+### To divide an IPv4 `/24` subnet into 4 `/26` subnets
+```javascript
+let subnets = ip6.divideSubnet4("192.168.1.0", 24, 26);
+console.log(subnets);
+/*
+[ '192.168.1.0',
+  '192.168.1.64',
+  '192.168.1.128',
+  '192.168.1.192' ]
+*/
+```
+
+### To divide an IPv4 `/24` subnet into `/32` addresses, but limit to 3
+```javascript
+let subnets = ip6.divideSubnet4("10.0.0.0", 24, 32, 3);
+console.log(subnets);
+/*
+[ '10.0.0.0', '10.0.0.1', '10.0.0.2' ]
+*/
+```
+
+### To calculate the range and size of an IPv4 `/24` subnet:
+```javascript
+let range = ip6.range4("192.168.1.0", 24, 32);
+console.log(range);
+/*
+{ start: '192.168.1.0', end: '192.168.1.255', size: 256 }
+*/
+```
+
+### To generate 5 random `/32` addresses from an IPv4 `/24` subnet:
+```javascript
+let r = ip6.randomSubnet4("10.0.0.0", 24, 32, 5);
+console.log(r);
+/*
+[ '10.0.0.37', '10.0.0.192', '10.0.0.5', '10.0.0.118', '10.0.0.244' ]
+*/
+```
+
 ## Standalone Usage
 ### To normalize an IPv6 address:
 ```bash
@@ -197,6 +236,39 @@ ip6 -R -s 2607:5300:60:: 48 56
 ```bash
 ip6 -p 2607:5300:60:1234:cafe:babe:dead:beef 64
 f.e.e.b.d.a.e.d.e.b.a.b.e.f.a.c
+```
+
+### To divide an IPv4 `/24` subnet into 4 `/26` subnets:
+```bash
+ip6 -d 192.168.1.0 24 26
+192.168.1.0
+192.168.1.64
+192.168.1.128
+192.168.1.192
+```
+
+### To divide an IPv4 `/24` subnet into `/32` addresses, but outputs only 3:
+```bash
+ip6 -d 10.0.0.0 24 32 3
+10.0.0.0
+10.0.0.1
+10.0.0.2
+```
+
+### To generate 5 random `/32` addresses from an IPv4 `/24` subnet:
+```bash
+ip6 -r 10.0.0.0 24 32 5
+10.0.0.37
+10.0.0.192
+10.0.0.5
+10.0.0.118
+10.0.0.244
+```
+
+### To calculate the range and size of an IPv4 `/24` subnet:
+```bash
+ip6 -R 192.168.1.0 24 32
+{"start":"192.168.1.0","end":"192.168.1.255","size":256}
 ```
 
 ## License

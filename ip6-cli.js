@@ -7,6 +7,10 @@ const require = createRequire(import.meta.url);
 
 let pjson = require('./package.json');
 
+const _isIPv4 = function (addr) {
+   return addr.includes('.');
+};
+
 (function () {
    'use strict';
 
@@ -27,9 +31,9 @@ let pjson = require('./package.json');
       console.log('   ip6 -v, --version           to show version information.');
       console.log('   ip6 -n, --normalize addr    to normalize an IPv6 address.');
       console.log('   ip6 -a, --abbreviate addr   to abbreviate an IPv6 address.');
-      console.log('   ip6 -d, --divide [-s, --short] subnet mask new_mask [limit] \n        to divide an IPv6 subnet into smaller subnets.');
-      console.log('   ip6 -r, --random [-s, --short] subnet mask new_mask [limit] \n        to generate random addresses/subnets from an IPv6 subnet.');
-      console.log('   ip6 -R, --range [-s, --short] subnet mask new_mask \n        to calculate the range and size of an IPv6 subnet.');
+      console.log('   ip6 -d, --divide [-s, --short] subnet mask new_mask [limit] \n        to divide a subnet into smaller subnets (auto-detects IPv4/IPv6).');
+      console.log('   ip6 -r, --random [-s, --short] subnet mask new_mask [limit] \n        to generate random addresses/subnets (auto-detects IPv4/IPv6).');
+      console.log('   ip6 -R, --range [-s, --short] subnet mask new_mask \n        to calculate the range and size of a subnet (auto-detects IPv4/IPv6).');
       console.log('   ip6 -p, --ptr addr mask   to generate PTR record for DNS zone file.');
       console.log();
       console.log('Examples:');
@@ -64,6 +68,13 @@ let pjson = require('./package.json');
       console.log('   2001:db8:0:0:3::');
       console.log('   2001:db8:0:0:4::');
       console.log();
+      console.log('   To divide an IPv4 /24 subnet into 4 /26 subnets:');
+      console.log('   ip6 -d 192.168.1.0 24 26');
+      console.log('   192.168.1.0');
+      console.log('   192.168.1.64');
+      console.log('   192.168.1.128');
+      console.log('   192.168.1.192');
+      console.log();
       console.log('   To generate 5 random /56 subnets from a /48 subnets:');
       console.log('   ip6 -r -s 2607:5300:60:: 48 56 5');
       console.log('   2607:5300:60:f00::');
@@ -72,9 +83,21 @@ let pjson = require('./package.json');
       console.log('   2607:5300:60:a800::');
       console.log('   2607:5300:60:e00::');
       console.log();
+      console.log('   To generate 5 random /32 addresses from an IPv4 /24 subnet:');
+      console.log('   ip6 -r 10.0.0.0 24 32 5');
+      console.log('   10.0.0.37');
+      console.log('   10.0.0.192');
+      console.log('   10.0.0.5');
+      console.log('   10.0.0.118');
+      console.log('   10.0.0.244');
+      console.log();
       console.log('   To calculate the range and size of a /64 subnet divided into /120 subnets:');
       console.log('   ip6 -R -s 2001:db8:: 64 80');
       console.log('   {"start":"2001:db8::","end":"2001:db8::ffff:ffff:ffff:ff00","size":65536}');
+      console.log();
+      console.log('   To calculate the range and size of an IPv4 /24 subnet:');
+      console.log('   ip6 -R 192.168.1.0 24 32');
+      console.log('   {"start":"192.168.1.0","end":"192.168.1.255","size":256}');
       console.log();
       console.log('   To generate a PTR record for DNS zone file:');
       console.log('   ip6 -p 2607:5300:60:1234:cafe:babe:dead:beef 64');
@@ -99,7 +122,9 @@ let pjson = require('./package.json');
       let abbr = input.includes('-s') || input.includes('--short');
       const args = input.filter(a => !a.startsWith('-'));
       try {
-         const output = ip6.divideSubnet(args[0], args[1], args[2], args[3], abbr);
+         const output = _isIPv4(args[0])
+            ? ip6.divideSubnet4(args[0], args[1], args[2], args[3])
+            : ip6.divideSubnet(args[0], args[1], args[2], args[3], abbr);
          for (let subnet of output) {
             console.log(subnet);
          }
@@ -110,7 +135,9 @@ let pjson = require('./package.json');
       let abbr = input.includes('-s') || input.includes('--short');
       const args = input.filter(a => !a.startsWith('-'));
       try {
-         const output = ip6.randomSubnet(args[0], args[1], args[2], args[3], abbr);
+         const output = _isIPv4(args[0])
+            ? ip6.randomSubnet4(args[0], args[1], args[2], args[3])
+            : ip6.randomSubnet(args[0], args[1], args[2], args[3], abbr);
          for (let subnet of output) {
             console.log(subnet);
          }
@@ -121,7 +148,9 @@ let pjson = require('./package.json');
       let abbr = input.includes('-s') || input.includes('--short');
       const args = input.filter(a => !a.startsWith('-'));
       try {
-         const output = ip6.rangeBigInt(args[0], args[1], args[2], abbr);
+         const output = _isIPv4(args[0])
+            ? ip6.range4(args[0], args[1], args[2])
+            : ip6.rangeBigInt(args[0], args[1], args[2], abbr);
          console.log(JSON.stringify(output));
       } catch (e) {
          console.error(e.message);

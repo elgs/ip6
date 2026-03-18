@@ -121,6 +121,75 @@ describe('To calculate the range of an IPv6 subnet.', function () {
    });
 });
 
+////////////////////////////////////////////////////////////////////////////
+// IPv4 tests
+
+describe('To divide IPv4 subnet.', function () {
+   it('should divide a /24 into 4 /26 subnets.', function () {
+      let n26 = ip6.divideSubnet4("192.168.1.0", 24, 26);
+      expect(n26.length).toBe(4);
+      expect(n26[0]).toBe('192.168.1.0');
+      expect(n26[1]).toBe('192.168.1.64');
+      expect(n26[2]).toBe('192.168.1.128');
+      expect(n26[3]).toBe('192.168.1.192');
+   });
+
+   it('should divide a /24 into /32 subnets with limit 3.', function () {
+      let n32 = ip6.divideSubnet4("10.0.0.0", 24, 32, 3);
+      expect(n32.length).toBe(3);
+      expect(n32[0]).toBe('10.0.0.0');
+      expect(n32[1]).toBe('10.0.0.1');
+      expect(n32[2]).toBe('10.0.0.2');
+   });
+
+   it('should divide a /16 into 256 /24 subnets.', function () {
+      let n24 = ip6.divideSubnet4("172.16.0.0", 16, 24);
+      expect(n24.length).toBe(256);
+      expect(n24[0]).toBe('172.16.0.0');
+      expect(n24[255]).toBe('172.16.255.0');
+   });
+});
+
+describe('To calculate the range of an IPv4 subnet.', function () {
+   it('should calculate the range of a /24 subnet.', function () {
+      let r = ip6.range4("192.168.1.0", 24, 32);
+      expect(r.start).toBe('192.168.1.0');
+      expect(r.end).toBe('192.168.1.255');
+      expect(r.size).toBe(256);
+   });
+
+   it('should calculate the range of a /24 to /26.', function () {
+      let r = ip6.range4("192.168.1.0", 24, 26);
+      expect(r.start).toBe('192.168.1.0');
+      expect(r.end).toBe('192.168.1.192');
+      expect(r.size).toBe(4);
+   });
+
+   it('should calculate the range of a /0 to /32.', function () {
+      let r = ip6.range4("0.0.0.0", 0, 32);
+      expect(r.start).toBe('0.0.0.0');
+      expect(r.end).toBe('255.255.255.255');
+      expect(r.size).toBe(4294967296);
+   });
+});
+
+describe('To generate random IPv4 subnets.', function () {
+   it('should generate 5 random /32 addresses within a /24.', function () {
+      let r = ip6.randomSubnet4("10.0.0.0", 24, 32, 5);
+      expect(r.length).toBe(5);
+      for (const addr of r) {
+         expect(addr.startsWith('10.0.0.')).toBe(true);
+      }
+   });
+
+   it('should generate 1 random subnet by default.', function () {
+      let r = ip6.randomSubnet4("192.168.0.0", 16, 24);
+      expect(r.length).toBe(1);
+      expect(r[0].startsWith('192.168.')).toBe(true);
+      expect(r[0].endsWith('.0')).toBe(true);
+   });
+});
+
 describe('To generate PTR records for DNS zone file.', function () {
    it('should generate a PTR record for DNS zone file.', function () {
       expect(ip6.ptr("2607:5300:60:1234:cafe:babe:dead:beef", 64)).toBe('f.e.e.b.d.a.e.d.e.b.a.b.e.f.a.c');

@@ -35,7 +35,7 @@ const normalize = function (a) {
       if (sections[i] === undefined) {
          sections[i] = '0000';
       }
-      sections[i] = _leftPad(sections[i], '0', 4);
+      sections[i] = sections[i].padStart(4, '0');
    }
    return sections.join(':');
 };
@@ -125,14 +125,6 @@ const validate = function (a) {
    }
 };
 
-const _leftPad = function (d, p, n) {
-   const padding = p.repeat(n);
-   if (d.length < padding.length) {
-      d = padding.substring(0, padding.length - d.length) + d;
-   }
-   return d;
-};
-
 const _hex2bin = function (hex) {
    return parseInt(hex, 16).toString(2)
 };
@@ -145,7 +137,7 @@ const _addr2bin = function (addr) {
    const sections = nAddr.split(":");
    let binAddr = '';
    for (const section of sections) {
-      binAddr += _leftPad(_hex2bin(section), '0', 16);
+      binAddr += _hex2bin(section).padStart(16, '0');
    }
    return binAddr;
 };
@@ -154,7 +146,7 @@ const _bin2addr = function (bin) {
    const addr = [];
    for (let i = 0; i < 8; ++i) {
       const binPart = bin.substr(i * 16, 16);
-      const hexSection = _leftPad(_bin2hex(binPart), '0', 4);
+      const hexSection = _bin2hex(binPart).padStart(4, '0');
       addr.push(hexSection);
    }
    return addr.join(':');
@@ -179,7 +171,7 @@ const divideSubnet = function (addr, mask0, mask1, limit, abbr) {
       if (!!limit && i >= limit) {
          break;
       }
-      const binSubnet = _leftPad(i.toString(2), '0', mask1 - mask0);
+      const binSubnet = i.toString(2).padStart(mask1 - mask0, '0');
       const binSubAddr = binNetPart + binSubnet + binHostPart;
       const hexAddr = _bin2addr(binSubAddr);
       if (!!abbr) {
@@ -293,6 +285,101 @@ const randomSubnet = function (addr, mask0, mask1, limit, abbr) {
    return ret;
 };
 
+// IPv4 helpers
+const _ipv4addr2bin = function (addr) {
+   const sections = addr.split('.');
+   if (sections.length !== 4) {
+      throw new Error('Invalid IPv4 address: ' + addr);
+   }
+   let bin = '';
+   for (const section of sections) {
+      const num = parseInt(section, 10);
+      if (isNaN(num) || num < 0 || num > 255) {
+         throw new Error('Invalid IPv4 address: ' + addr);
+      }
+      bin += num.toString(2).padStart(8, '0');
+   }
+   return bin;
+};
+
+const _bin2ipv4addr = function (bin) {
+   const parts = [];
+   for (let i = 0; i < 4; ++i) {
+      parts.push(parseInt(bin.substr(i * 8, 8), 2));
+   }
+   return parts.join('.');
+};
+
+const divideSubnet4 = function (addr, mask0, mask1, limit) {
+   mask0 *= 1;
+   mask1 *= 1;
+   limit *= 1;
+   mask1 = mask1 || 32;
+   if (mask0 < 0 || mask1 < 0 || mask0 > 32 || mask1 > 32 || mask0 > mask1) {
+      throw new Error('Invalid masks.');
+   }
+   const ret = [];
+   const binAddr = _ipv4addr2bin(addr);
+   const binNetPart = binAddr.substr(0, mask0);
+   const binHostPart = '0'.repeat(32 - mask1);
+   const subnetBits = mask1 - mask0;
+   const numSubnets = Math.pow(2, subnetBits);
+   for (let i = 0; i < numSubnets; ++i) {
+      if (!!limit && i >= limit) {
+         break;
+      }
+      const binSubnet = i.toString(2).padStart(mask1 - mask0, '0');
+      const binSubAddr = binNetPart + binSubnet + binHostPart;
+      ret.push(_bin2ipv4addr(binSubAddr));
+   }
+   return ret;
+};
+
+const range4 = function (addr, mask0, mask1) {
+   mask0 *= 1;
+   mask1 *= 1;
+   mask1 = mask1 || 32;
+   if (mask0 < 0 || mask1 < 0 || mask0 > 32 || mask1 > 32 || mask0 > mask1) {
+      throw new Error('Invalid masks.');
+   }
+   const binAddr = _ipv4addr2bin(addr);
+   const binNetPart = binAddr.substr(0, mask0);
+   const binHostPart = '0'.repeat(32 - mask1);
+   const binStartAddr = binNetPart + '0'.repeat(mask1 - mask0) + binHostPart;
+   const binEndAddr = binNetPart + '1'.repeat(mask1 - mask0) + binHostPart;
+   return {
+      start: _bin2ipv4addr(binStartAddr),
+      end: _bin2ipv4addr(binEndAddr),
+      size: Math.pow(2, mask1 - mask0)
+   };
+};
+
+const randomSubnet4 = function (addr, mask0, mask1, limit) {
+   mask0 *= 1;
+   mask1 *= 1;
+   limit *= 1;
+   mask1 = mask1 || 32;
+   limit = limit || 1;
+   if (mask0 < 0 || mask1 < 0 || mask0 > 32 || mask1 > 32 || mask0 > mask1) {
+      throw new Error('Invalid masks.');
+   }
+   const ret = [];
+   const binAddr = _ipv4addr2bin(addr);
+   const binNetPart = binAddr.substr(0, mask0);
+   const binHostPart = '0'.repeat(32 - mask1);
+   const subnetBits = mask1 - mask0;
+   const numSubnets = Math.pow(2, subnetBits);
+   for (let i = 0; i < numSubnets && i < limit; ++i) {
+      let binSubnet = '';
+      for (let j = 0; j < mask1 - mask0; ++j) {
+         binSubnet += Math.floor(Math.random() * 2);
+      }
+      const binSubAddr = binNetPart + binSubnet + binHostPart;
+      ret.push(_bin2ipv4addr(binSubAddr));
+   }
+   return ret;
+};
+
 const ptr = function (addr, mask) {
    validate(addr);
    mask *= 1;
@@ -313,4 +400,7 @@ export default {
    rangeBigInt,
    randomSubnet,
    ptr,
+   divideSubnet4,
+   range4,
+   randomSubnet4,
 };
